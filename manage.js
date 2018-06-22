@@ -60,7 +60,7 @@ function playGame(t1,t2){
 // Generates HTML table of players
 function generatePlayerTable(){
 	let str = "<table>";
-	let header = "<tr><th>Name</th><th>Shooting</th><th>Handle</th><th>Defense</th><th>Rebounding</th><th>Ethic</th></tr>";
+	let header = "<tr><th>Name</th><th>Shooting</th><th>Handle</th><th>Defense</th><th>Rebounding</th><th>Ethic</th><th>Year</th></tr>";
 	str = str + header;
 
 	for(player of players){
@@ -74,12 +74,15 @@ function generatePlayerTable(){
 			else{
 				row += "<td>"+ player.attr[key] + "</td>";
 			}
-			// Wipe the improvement
-			player.improvements = {}
+			
 		}
+		// Wipe the improvement
+		player.improvements = {}
+		row += "<td>"+ player.year + "</td>"
 		row += "</tr>"
 		str = str + row;
 	}
+
 	str = str + "</table>";
 	return str;
 }
@@ -94,7 +97,7 @@ function generateRecruits(){
 	for(let i = 0; i <= 7; i++){
 		let r = new Player(i, {"shooting":Math.floor(Math.random() * 10 + 1),"handle":Math.floor(Math.random() * 10 + 1),
 			"defense":Math.floor(Math.random() * 10 + 1),"rebounding":Math.floor(Math.random() * 10 + 1),
-			"ethic":Math.floor(Math.random() * 10 + 1)},0);
+			"ethic":Math.floor(Math.random() * 10 + 1)},1);
 		recruits.push(r);
 	}
 	str = str + "<table>"

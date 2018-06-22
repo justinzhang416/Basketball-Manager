@@ -38,7 +38,7 @@ function startGame(){
     teams.push(new Team("NC State", 70,0,0));
     teams.push(new Team("Syracuse", 75,0,0));
 
-    // TODO: Actually calculate rating from players. 
+    // TODO: Actually calculate rating from players.
     let yourTeam = new Team("UNC",100,0,0);
     teams.push(yourTeam);
 
