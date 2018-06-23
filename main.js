@@ -139,3 +139,13 @@ function playGames(){
     }
 
 }
+
+
+function initPlayoffs(){
+    teamcopy = teams.slice();
+    const compare = (a, b) => a.l < b.l ? -1 : (a.l > b.l ? 1 : 0);
+    teamcopy.sort(compare);
+
+    let playoffTeams = teamcopy.slice(0,teamcopy.length / 2);
+}
+
