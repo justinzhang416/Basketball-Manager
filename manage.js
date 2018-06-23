@@ -105,7 +105,12 @@ function generateRecruits(){
 	// TODO: Use normal density curve instead of random, so we get more average players. Or use data.
 	// TODO: Pull names from simple database.
 	for(let i = 0; i <= 7; i++){
-		let r = new Player(i, {"shooting":Math.floor(Math.random() * 10 + 1),"handle":Math.floor(Math.random() * 10 + 1),
+		var namer = Math.floor(Math.random() * 3600 + 1)
+		var fname = firstNames[namer]
+		namer = Math.floor(Math.random() * 3300 + 1)
+		var lname = lastNames[namer]
+		var fullName = fname + ' ' + lname
+		let r = new Player(fullName, {"shooting":Math.floor(Math.random() * 10 + 1),"handle":Math.floor(Math.random() * 10 + 1),
 			"defense":Math.floor(Math.random() * 10 + 1),"rebounding":Math.floor(Math.random() * 10 + 1),
 			"ethic":Math.floor(Math.random() * 10 + 1)},1);
 		recruits.push(r);
