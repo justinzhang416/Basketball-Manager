@@ -68,6 +68,7 @@ function playGame(t1,t2){
 
 // Generates HTML table of players
 function generatePlayerTable(){
+	var yearKey = {1: 'FR',2: 'SO',3: 'JR',4: 'SR'}
 	let str = "<table>";
 	let header = "<tr><th>Name</th><th>Shooting</th><th>Handle</th><th>Defense</th><th>Rebounding</th><th>Ethic</th><th>AVG</th><th>Year</th></tr>";
 	str = str + header;
@@ -88,7 +89,7 @@ function generatePlayerTable(){
 		row += "<td>"+ player.avg + "</td>"
 		// Wipe the improvement
 		player.improvements = {}
-		row += "<td>"+ player.year + "</td>"
+		row += "<td>"+ yearKey[player.year] + "</td>"
 		row += "</tr>"
 		str = str + row;
 	}
@@ -99,6 +100,7 @@ function generatePlayerTable(){
 
 // Generates HTML table of recruits
 function generateRecruits(){
+	var yearKey = {1: 'FR',2: 'SO',3: 'JR',4: 'SR'}
 	let str = `<form action="/handleRecruits" method="post">`;
 	recruits = [];
 	// Generates recruits
