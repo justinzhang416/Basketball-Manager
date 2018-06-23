@@ -49,7 +49,7 @@ function recruitScreen(){
 	$(".main").html(
     	`<div class="page-title">This year's returning players!</div>` +
     	`<div class="page-content">`
-    		+ `<div class="players">` + generatePlayerTable() + `</div>` 
+    		+ `<div class="players">` + generatePlayerTable() + `</div>`
     		+ `<div class="page-title">This year's recruiting class. Select those who you want to recruit!</div>`
     		+ generateRecruits() +
     	`</div>`
@@ -59,10 +59,18 @@ function recruitScreen(){
     $('form').on('submit', function(e) { //use on if jQuery 1.7+
         e.preventDefault();  //prevent form from submitting
         let data = $("form :input").serializeArray();
-        console.log(data); 
+        console.log(data);
+        var num = 0
+        for(entry of data){
+          num += 1
+        }
+        var cutoff = 0
         for(entry of data){
             //console.log(entry.value);
-            players.push(recruits[parseInt(entry.value)]);
+            cutoff = Math.floor(Math.random() * num) + 1;
+            if(cutoff == 1){
+              players.push(recruits[parseInt(entry.value)]);
+            }
         }
         initSeason();
     });
@@ -81,7 +89,7 @@ function initSeason(){
 	$(".main").html(
     	`<div class="page-title">This year's final roster!</div>` +
     	`<div class="page-content">`
-    		+ `<div class="players">` + generatePlayerTable() + `</div>` 
+    		+ `<div class="players">` + generatePlayerTable() + `</div>`
     		+ `<div class="page-continue"><button onclick='startSeason()'>Start Season!</button></div>` +
     	`</div>`
     );
@@ -91,8 +99,8 @@ function startSeason(){
     $(".main").html(
         `<div class="page-title">Current Standings</div>` +
         `<div class="page-content">`
-            + `<div class="standings">` + generateStandings() + `</div>` 
-            + `<div class="scores">` +  `</div>` 
+            + `<div class="standings">` + generateStandings() + `</div>`
+            + `<div class="scores">` +  `</div>`
             + `<div class="page-continue"><button onclick='playGames()'>Play Game</button></div>` +
         `</div>`
     );
@@ -103,7 +111,7 @@ function endSeason(){
 	$(".main").html(
     	`<div class="page-title">End of Season! Your player's made the following improvements.</div>` +
     	`<div class="page-content">`
-    		+ `<div class="players">` + generatePlayerTable() + `</div>` 
+    		+ `<div class="players">` + generatePlayerTable() + `</div>`
     		+ `<div class="page-continue"><button onclick='recruitScreen()'>Start Next Season!</button></div>` +
     	`</div>`
     	);
@@ -117,7 +125,7 @@ function playGames(){
 	scores += "<p>" + playGame(temp[teamIdx],teams[0]) + "<p>";
 
 	for (var idx = 1; idx < halfSize; idx++)
-	{               
+	{
 		var firstTeam = temp[(day + idx) % teamsSize];
 		var secondTeam = temp[(day  + teamsSize - idx) % teamsSize];
         scores += "<p>" + playGame(firstTeam, secondTeam) + "<p>" ;
@@ -131,4 +139,3 @@ function playGames(){
     }
 
 }
-
