@@ -36,8 +36,13 @@ function updatePlayers(){
 
 			// Choose attr and +1.
 			let choice = choices[Math.floor(Math.random() * choices.length)];
-			player.attr[choice] += 1;
-
+			if(player.attr[choice] != 10){
+				player.attr[choice] += 1;
+			}else{
+				choice = choices[Math.floor(Math.random() * choices.length)];
+				if(player.attr[choice] != 10){
+					player.attr[choice] += 1;
+			}
 			// For some reason didnt work when improvement just array... whatever
 			player.improvements[choice] = true;
 			var sum = 0
