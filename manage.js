@@ -232,3 +232,22 @@ function generateStandings(){
 	str = str + "</table>";
 	return str;
 }
+
+function generatePlayoffTable(){
+	let str = "<table>";
+	let header = "<tr><th>Home</th><th>Away</th></tr>";
+	str = str + header;
+
+	let i = 0; let j = playoffTeams.length - 1;
+	while(i < j){
+		let row = "<tr>";
+		row += "<td> ("+ (playoffTeams[i].seed) + ") " + playoffTeams[i].name +"</td>";
+		row += "<td> ("+ (playoffTeams[j].seed) + ") " + playoffTeams[j].name +"</td>";
+		row += "</tr>";
+		str = str + row;
+		i += 1;
+        j -= 1;
+	}
+	str = str + "</table>";
+	return str;
+}

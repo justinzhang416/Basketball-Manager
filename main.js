@@ -4,6 +4,7 @@ let recruits;
 let potentials;
 let addons;
 let teams;
+let playoffTeams;
 
 // Global variables needed for round robin tourney
 let temp;
@@ -178,16 +179,65 @@ function playGames(){
     $(".scores").html(scores);
     $(".standings").html(generateStandings());
     if(numDays == day){
-        $(".page-continue").html(`<button onclick='endSeason()'>Season Done</button>`);
+        $(".page-continue").html(`<button onclick='initPlayoffs()'>Begin Playoffs</button>`);
+        //$(".page-continue").html(`<button onclick='endSeason()'>Season Done</button>`);
     }
 
 }
-
 
 function initPlayoffs(){
     teamcopy = teams.slice();
     const compare = (a, b) => a.l < b.l ? -1 : (a.l > b.l ? 1 : 0);
     teamcopy.sort(compare);
+    playoffTeams = [];
+    for(let i = 0; i < teamcopy.length; i ++){
+        playoffTeams.push(teamcopy[i]);
+        teamcopy[i]['seed'] = i + 1;
+    }
+    // playoffTeams = teamcopy.slice(0,teamcopy.length / 2);
+    console.log(playoffTeams);
 
-    let playoffTeams = teamcopy.slice(0,teamcopy.length / 2);
+    $(".main").html(
+        `<div class="page-title">Playoffs</div>` +
+        `<div class="page-content">`
+            + `<div class="playoff-matchups">` + generatePlayoffTable() + `</div>`
+            + `<div class="scores">` +  `</div>`
+            + `<div class="page-continue"><button onclick='playPlayoffs()'>Play Game</button></div>` +
+        `</div>`
+    );
+}
+
+function playPlayoffs(){
+    let scores = "<header>Scores</header>";
+    let i = 0; let j = playoffTeams.length - 1;
+    let newPlayoffTeams = [];
+    while(i < j){
+        let t1 = playoffTeams[i];
+        let t2 = playoffTeams[j];
+
+        var firstScore = Math.floor(Math.random() * t1.totalRating + .2* t1.totalRating);
+        var secondScore = Math.floor(Math.random() * t2.totalRating + .2*t2.totalRating);
+        let result = t1.name + ": " + firstScore + ", " + t2.name + ": " + secondScore;
+        scores += "<p>" + result + "<p>" ;
+        if(firstScore > secondScore){
+            newPlayoffTeams.push(t1);
+        }
+        else{
+            newPlayoffTeams.push(t2);
+        }
+        i += 1;
+        j -= 1;
+    }
+    playoffTeams = newPlayoffTeams;
+
+    $(".scores").html(scores);
+
+    if(playoffTeams.length == 1){
+        $(".playoff-matchups").html(playoffTeams[0].name + " is the national champion!");
+        $(".page-continue").html(`<button onclick='endSeason()'>Season Done</button>`);
+    }
+    else{
+        $(".playoff-matchups").html(generatePlayoffTable());
+    }
+    
 }
