@@ -64,7 +64,7 @@ table {
     justify-content: center;
     background-color: #CAEBF2;
     color: #A9A9A9;
-    flex:20vh;
+    flex:15vh;
 }
 
 .pic{
@@ -74,7 +74,7 @@ table {
 
 .content {
     /*background-color: blue;*/
-    flex:80vh;
+    flex:85vh;
     display: flex;
     flex-direction:row;
     overflow: auto;
@@ -99,8 +99,8 @@ table {
 }
 
 img.pic {
-  width:25vh;
-  height:25vh;
+  width:15vh;
+  height:15vh;
 }
 
 .page-title{
@@ -122,13 +122,33 @@ img.pic {
     margin: 7vh 2vw;
 }
 
-table{
+/*table{
     margin-left:auto; 
     margin-right:auto;
     width: 100%;
     border-collapse: separate;
     border: 1px solid black;
    
+}*/
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+th{
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
 }
 
 /*th,td{
