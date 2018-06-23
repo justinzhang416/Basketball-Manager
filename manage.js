@@ -139,6 +139,76 @@ function generateRecruits(){
 	return str;
 }
 
+function choosePlayers(){
+	var yearKey = {1: 'FR',2: 'SO',3: 'JR',4: 'SR'}
+	let str = `<form id="choosing" action="/handleCuts" method="post">`;
+	str += "<table>";
+	let header = "<tr><th>Name</th><th>Shooting</th><th>Handle</th><th>Defense</th><th>Rebounding</th><th>Ethic</th><th>AVG</th><th>Year</th><th>Keep?</th></tr>";
+	str = str + header;
+  potentials = []
+	addons = []
+	var ind = 0
+	for(player of players){
+		potentials.push(player);
+		console.log(potentials)
+		let row = "<tr>"
+		row += "<td>"+ player.name +"</td>";
+		for(let key in player.attr){
+			// If improved over past season, give it a star.
+			if(key in player.improvements){
+				row += "<td><b>"+ player.attr[key] + "*</b></td>";
+			}
+			else{
+				row += "<td>"+ player.attr[key] + "</td>";
+			}
+
+		}
+		row += "<td>"+ player.avg + "</td>"
+		// Wipe the improvement
+		player.improvements = {}
+		row += "<td>"+ yearKey[player.year] + "</td>"
+		row += `<td> <input type="checkbox" name="keep" value=`+ ind  + `> </td>`;
+		row += "</tr>"
+		str = str + row;
+		ind += 1
+	}
+	for(let i = 0; i <= 7; i++){
+		var namer = Math.floor(Math.random() * 3600 + 1)
+		var fname = firstNames[namer]
+		namer = Math.floor(Math.random() * 3300 + 1)
+		var lname = lastNames[namer]
+		var fullName = fname + ' ' + lname
+		let r = new Player(fullName, {"shooting":Math.floor(Math.random() * 10 + 1),"handle":Math.floor(Math.random() * 10 + 1),
+			"defense":Math.floor(Math.random() * 10 + 1),"rebounding":Math.floor(Math.random() * 10 + 1),
+			"ethic":Math.floor(Math.random() * 10 + 1)},1);
+		potentials.push(r);
+		addons.push(r)
+	}
+
+	for(let i = 0; i <= 7; i++){
+		r = addons[i];
+		let row = "<tr>";
+		row += "<td>"+ r.name +"</td>";
+		for(let key in r.attr){
+			row += "<td>"+ r.attr[key] + "</td>";
+		}
+		row += "<td>"+ r.avg + "</td>";
+		// Right, keeping tracking of recruits by index in global variable.
+		row += "<td>"+ yearKey[r.year] + "</td>"
+		row += `<td> <input type="checkbox" name="keep" value=`+ ind + `> </td>`;
+		row += "</tr>";
+		str = str + row;
+		ind += 1
+	}
+	str = str + "</table>";
+	str += `<input id="CUTS" type="submit" value="Make Cuts"></form>`;
+	return str;
+}
+
+
+
+
+
 // Generates HTML table of standings
 function generateStandings(){
 	teamcopy = teams.slice();

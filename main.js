@@ -1,6 +1,8 @@
 // Global variables D:
 let players;
 let recruits;
+let potentials;
+let addons;
 let teams;
 
 // Global variables needed for round robin tourney
@@ -56,7 +58,8 @@ function recruitScreen(){
     	);
 
     // When form submitted, handle here
-    $('form').on('submit', function(e) { //use on if jQuery 1.7+
+    $('form').on('submit', function(e) {
+        //use on if jQuery 1.7+
         e.preventDefault();  //prevent form from submitting
         let data = $("form :input").serializeArray();
         console.log(data);
@@ -66,14 +69,54 @@ function recruitScreen(){
         }
         var cutoff = 0
         for(entry of data){
-            //console.log(entry.value);
+            console.log(entry.value);
             cutoff = Math.floor(Math.random() * num) + 1;
-            if(cutoff == 1){
+            if(cutoff <= 1){
               players.push(recruits[parseInt(entry.value)]);
             }
         }
-        initSeason();
+        chooseScreen();
     });
+}
+
+function chooseScreen(){
+  $(".main").html(
+      `<div class="page-title">Choose 8 players to make the final team</div>` +
+      `<div class="page-content">`
+        + `<div class="players">` + choosePlayers()+ `</div>`
+         +
+      `</div>`
+      );
+      $('#CUTS').attr('disabled','disabled');
+      $("input[name=keep]").change(function(){
+          var max = 8;
+          if( $("input[name=keep]:checked").length == max ){
+              $("input[name=keep]").attr('disabled', 'disabled');
+              $("input[name=keep]:checked").removeAttr('disabled');
+              $('#CUTS').removeAttr('disabled');
+          }else{
+            $('#CUTS').attr('disabled','disabled');
+               $("input[name=keep]").removeAttr('disabled');
+          }
+      });
+
+      $('form').on('submit', function(e) { //use on if jQuery 1.7+
+          e.preventDefault();  //prevent form from submitting
+          players = []
+          let data = $("form :input").serializeArray();
+          console.log(data);
+          var num = 0
+          for(entry of data){
+            num += 1
+          }
+          var cutoff = 0
+          for(entry of data){
+              console.log(entry.value);
+                players.push(potentials[parseInt(entry.value)]);
+          }
+          initSeason();
+      });
+
 }
 
 
@@ -148,4 +191,3 @@ function initPlayoffs(){
 
     let playoffTeams = teamcopy.slice(0,teamcopy.length / 2);
 }
-
