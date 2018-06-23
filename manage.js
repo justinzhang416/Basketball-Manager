@@ -40,7 +40,11 @@ function updatePlayers(){
 
 			// For some reason didnt work when improvement just array... whatever
 			player.improvements[choice] = true;
-
+			var sum = 0
+			for(let key in player.attr){
+				sum += player.attr[key]
+			}
+			player.avg = sum / 5.0
 			// Increment year and put into next year roster
 			player.year += 1;
 			newRoster.push(player);

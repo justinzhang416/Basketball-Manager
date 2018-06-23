@@ -239,5 +239,5 @@ function playPlayoffs(){
     else{
         $(".playoff-matchups").html(generatePlayoffTable());
     }
-    
+
 }
