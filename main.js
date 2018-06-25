@@ -264,6 +264,7 @@ function playPlayoffs(){
     $(".scores").html(scores);
 
     if(playoffTeams.length == 1){
+        playoffTeams[0].champs++;
         $(".playoff-matchups").html(playoffTeams[0].name + " is the national champion!");
         $(".page-continue").html(`<button onclick='endSeason()'>Season Done</button>`);
     }
