@@ -16,9 +16,19 @@ function Team(name, totalRating, w, l){
   this.totalRating = totalRating;
   this.w = w;
   this.l = l;
+  this.totw = 0;
+  this.totl = 0;
+  this.champs = 0;
 }
 function avgAttr(attr){
 
+}
+
+function resetRecords(){
+	for(team of teams){
+		team.w = 0;
+		team.l = 0;
+	}
 }
 
 // Updates the stats of players after season.
@@ -34,17 +44,23 @@ function updatePlayers(){
 			// Keep track of improvements. Right now only choosing one attr to +1.
 			player.improvements = {};
 
-			// Choose attr and +1.
-			let choice = choices[Math.floor(Math.random() * choices.length)];
-			// if(player.attr[choice] != 10){
-				player.attr[choice] += 1;
-			// }else{
-			// 	choice = choices[Math.floor(Math.random() * choices.length)];
-			// 	if(player.attr[choice] != 10){
-			// 		player.attr[choice] += 1;
-			// }
-			// For some reason didnt work when improvement just array... whatever
-			player.improvements[choice] = true;
+			//Player with ethic of 5 gets on average one attr improved.
+			for(let i = 1; i <= player.attr["ethic"]; i++){
+				if(Math.random() < .2){
+					// Choose attr and +1.
+					let choice = choices[Math.floor(Math.random() * choices.length)];
+					// if(player.attr[choice] != 10){
+					player.attr[choice] += 1;
+					// }else{
+					// 	choice = choices[Math.floor(Math.random() * choices.length)];
+					// 	if(player.attr[choice] != 10){
+					// 		player.attr[choice] += 1;
+					// }
+					// For some reason didnt work when improvement just array... whatever
+					player.improvements[choice] = true;
+				}
+			}
+			
 			var sum = 0
 			for(let key in player.attr){
 				sum += player.attr[key]
@@ -66,11 +82,15 @@ function playGame(t1,t2){
 	let result = t1.name + ": " + firstScore + ", " + t2.name + ": " + secondScore;
 	if(firstScore > secondScore){
 		t1.w++;
+		t1.totw++;
 		t2.l++;
+		t2.totl++;
 	}
 	else{
 		t1.l++;
+		t1.totl++;
 		t2.w++;
+		t2.totw++;
 	}
 	return result;
 }
@@ -157,30 +177,56 @@ function choosePlayers(){
   potentials = []
 	addons = []
 	var ind = 0
+
+	// Add existing players
 	for(player of players){
 		potentials.push(player);
 		console.log(potentials)
 		let row = "<tr>"
 		row += "<td>"+ player.name +"</td>";
 		for(let key in player.attr){
-			// If improved over past season, give it a star.
-			if(key in player.improvements){
-				row += "<td><b>"+ player.attr[key] + "*</b></td>";
-			}
-			else{
-				row += "<td>"+ player.attr[key] + "</td>";
-			}
-
+			row += "<td>"+ player.attr[key] + "</td>";
 		}
 		row += "<td>"+ player.avg + "</td>"
-		// Wipe the improvement
-		player.improvements = {}
+
 		row += "<td>"+ yearKey[player.year] + "</td>"
 		row += `<td> <input type="checkbox" name="keep" value=`+ ind  + `> </td>`;
 		row += "</tr>"
 		str = str + row;
 		ind += 1
 	}
+
+	str = str + "</table>";
+
+	str = str + "<br>Accepted Recruits<br><table>";
+	
+	// Add accepted recruits
+	if(recruits.length == 0){
+		str += "None";
+	}
+	else{
+		str = str + header;
+	}
+	for(recruit of recruits){
+		potentials.push(recruit);
+		let row = "<tr>";
+		row += "<td>"+ recruit.name +"</td>";
+		for(let key in recruit.attr){
+			row += "<td>"+ recruit.attr[key] + "</td>";
+		}
+		row += "<td>"+ recruit.avg + "</td>";
+		// Right, keeping tracking of recruits by index in global variable.
+		row += "<td>"+ yearKey[recruit.year] + "</td>"
+		row += `<td> <input type="checkbox" name="keep" value=`+ ind + `> </td>`;
+		row += "</tr>";
+		str = str + row;
+		ind += 1;
+	}
+
+	str = str + "</table>";
+
+	str = str + "<br>Walk Ons<br><table>";
+	str = str + header;
 	for(let i = 0; i <= 7; i++){
 		var namer = Math.floor(Math.random() * 3600 + 1)
 		var fname = firstNames[namer]
@@ -259,4 +305,8 @@ function generatePlayoffTable(){
 	}
 	str = str + "</table>";
 	return str;
+}
+
+function generateHistory(){
+	return "W-L: " + myTeam.totw + "-" + myTeam.totl + ", Champs: " + myTeam.champs;
 }

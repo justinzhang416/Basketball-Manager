@@ -6,6 +6,8 @@ let addons;
 let teams;
 let playoffTeams;
 
+let myTeam;
+
 // Global variables needed for round robin tourney
 let temp;
 let day;
@@ -36,20 +38,21 @@ function startGame(){
 	teams.push(new Team("Duke",50,0,0));
 	teams.push(new Team("Virginia", 80,0,0));
 	teams.push(new Team("Louisville", 79,0,0));
-    teams.push(new Team("Miami", 66,0,0));
-    teams.push(new Team("Wake Forest", 60,0,0));
-    teams.push(new Team("NC State", 70,0,0));
-    teams.push(new Team("Syracuse", 75,0,0));
+  teams.push(new Team("Miami", 66,0,0));
+  teams.push(new Team("Wake Forest", 60,0,0));
+  teams.push(new Team("NC State", 70,0,0));
+  teams.push(new Team("Syracuse", 75,0,0));
 
-    // TODO: Actually calculate rating from players.
-    let yourTeam = new Team("UNC",100,0,0);
-    teams.push(yourTeam);
+  // TODO: Actually calculate rating from players.
+  myTeam = new Team("UNC",100,0,0);
+  teams.push(myTeam);
 
 	recruitScreen();
 }
 
 function recruitScreen(){
 	$(".main").html(
+      `<div class="hist">` + generateHistory() + `</div>` +
     	`<div class="page-title">This year's returning players!</div>` +
     	`<div class="page-content">`
     		+ `<div class="players">` + generatePlayerTable() + `</div>`
@@ -69,13 +72,15 @@ function recruitScreen(){
           num += 1
         }
         var cutoff = 0
+        let acceptedRecruits = [];
         for(entry of data){
             console.log(entry.value);
             cutoff = Math.floor(Math.random() * num) + 1;
             if(cutoff <= 1){
-              players.push(recruits[parseInt(entry.value)]);
+              acceptedRecruits.push(recruits[parseInt(entry.value)]);
             }
         }
+        recruits = acceptedRecruits;
         chooseScreen();
     });
 }
@@ -113,15 +118,39 @@ function chooseScreen(){
           var cutoff = 0
           for(entry of data){
               console.log(entry.value);
-                players.push(potentials[parseInt(entry.value)]);
+              players.push(potentials[parseInt(entry.value)]);
           }
           initSeason();
       });
 
 }
 
+//Pretty sure this doesn't work. Some internet code.
+function gaussianRandom(mean, sigma) {
+  let u = Math.random()*0.682;
+  return ((u % 1e-8 > 5e-9 ? 1 : -1) * (Math.sqrt(-Math.log(Math.max(1e-9, u)))-0.618))*1.618 * sigma + mean;
+}
+
 
 function initSeason(){
+  // Calculate total rating from players
+  let totalRating = 0;
+  for(player of players){
+    totalRating += player.attr["shooting"] + player.attr["handle"] + player.attr["defense"] + player.attr["rebounding"]
+  }
+  myTeam.totalRating = totalRating * 100 / 320;
+  console.log(myTeam.totalRating);
+
+  for(team of teams){
+    if(team != myTeam){
+      team.totalRating = gaussianRandom(50,20);//Math.floor(Math.random() * 100 + 1);
+      
+    }
+    console.log(team.name + ": " +team.totalRating);
+  }
+
+  
+
 	temp = new Array();
 	day = 0;
 	temp.push.apply(temp,teams);
@@ -129,6 +158,8 @@ function initSeason(){
 	numDays = (teams.length - 1); // Days needed to complete tournament
 	halfSize = teams.length / 2;
 	teamsSize = temp.length;
+
+  resetRecords();
 
 	$(".main").html(
     	`<div class="page-title">This year's final roster!</div>` +
@@ -163,7 +194,7 @@ function endSeason(){
 
 function playGames(){
 
-    let scores = "<header>Scores</header>";
+  let scores = "<header>Scores</header>";
 
 	var teamIdx = day % teamsSize;
 	scores += "<p>" + playGame(temp[teamIdx],teams[0]) + "<p>";

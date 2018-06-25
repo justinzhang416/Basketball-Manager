@@ -122,6 +122,13 @@ img.pic {
     margin: 7vh 2vw;
 }
 
+.hist{
+    color: #A9A9A9;
+    text-align: right;
+    margin: 2vh 2vw;
+}
+
+
 /*table{
     margin-left:auto; 
     margin-right:auto;
