@@ -60,7 +60,7 @@ function updatePlayers(){
 					player.improvements[choice] = true;
 				}
 			}
-			
+
 			var sum = 0
 			for(let key in player.attr){
 				sum += player.attr[key]
@@ -199,7 +199,7 @@ function choosePlayers(){
 	str = str + "</table>";
 
 	str = str + "<br>Accepted Recruits<br><table>";
-	
+
 	// Add accepted recruits
 	if(recruits.length == 0){
 		str += "None";
@@ -233,9 +233,11 @@ function choosePlayers(){
 		namer = Math.floor(Math.random() * 3300 + 1)
 		var lname = lastNames[namer]
 		var fullName = fname + ' ' + lname
-		let r = new Player(fullName, {"shooting":Math.floor(Math.random() * 10 + 1),"handle":Math.floor(Math.random() * 10 + 1),
-			"defense":Math.floor(Math.random() * 10 + 1),"rebounding":Math.floor(Math.random() * 10 + 1),
-			"ethic":Math.floor(Math.random() * 10 + 1)},1);
+		var yearSeed = Math.floor(Math.random() * 4 + 1)
+		var yearChanger = .25 * yearSeed
+		let r = new Player(fullName, {"shooting":Math.floor(Math.random() * 9 + 1 + yearChanger),"handle":Math.floor(Math.random() * 9 + 1+ yearChanger),
+			"defense":Math.floor(Math.random() * 9 + 1+ yearChanger),"rebounding":Math.floor(Math.random() * 9 + 1+ yearChanger),
+			"ethic":Math.floor(Math.random() * 10 + 1)},yearSeed);
 		potentials.push(r);
 		addons.push(r)
 	}
