@@ -48,14 +48,14 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-.container{
+.my-container{
 	display: flex;
     flex-direction: row;
     min-height: 100vh;
-    max-height: 100vh
+    max-height: 100vh;
 }
 
-.banner {
+.navbar {
     flex:15vh;
     display: flex;
     font-size: 2em;
@@ -63,8 +63,8 @@ table {
     align-items: center;
     justify-content: center;
     background-color: #EFEFEF;
-
     color: #A9A9A9;
+    margin-bottom: 0px;
 }
 
 .pic{
@@ -87,8 +87,8 @@ table {
     /*flex: 85vw;*/
     /*border-left: 5px solid #CAEBF2;
     border-top: 5px solid #CAEBF2;*/
-    border: 5px solid #EFEFEF;
-   /* border-radius: 15px;*/
+/*    border: 5px solid #EFEFEF;
+*/   /* border-radius: 15px;*/
     flex-direction: column;
     overflow: auto;
     /*margin: 1vh 1vw;*/
@@ -103,16 +103,26 @@ table {
     
 }
 
-.filler{
+#filler{
     flex:15vh;
-    background: #FFFFFF;
+    background-color: #EFEFEF;
 
 }
-.side-content{
+.flex-column{
     flex:85vh;
-    background: #A9A9A9;
+    background: #EFEFEF;
     overflow: auto;
+    text-align: center;
+    padding: 2vh 0vw;
 }
+.p-2{
+    padding: 2vh 0vw;
+    color: #000000;
+}
+/*.nav-link{
+    padding: 3vh 0vw;
+    text-align: center;
+}*/
 
 img.pic {
   width:15vh;
