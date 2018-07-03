@@ -18,11 +18,11 @@ time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+
+/*article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
     display: block;
-}
+}*/
 body {
     line-height: 1;
     background-color: #FFFFFF;
@@ -108,17 +108,29 @@ table {
     background-color: #EFEFEF;
 
 }
-.flex-column{
+.sidebar-nav{
     flex:85vh;
-    background: #EFEFEF;
+/*    background: #EFEFEF;
     overflow: auto;
     text-align: center;
-    padding: 2vh 0vw;
+    padding: 2vh 0vw;*/
 }
-.p-2{
-    padding: 2vh 0vw;
-    color: #000000;
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 40px;
 }
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: #999999;
+}
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
 /*.nav-link{
     padding: 3vh 0vw;
     text-align: center;
@@ -145,7 +157,9 @@ img.pic {
 .page-continue{
     color: #A9A9A9;
     text-align: center;
-    margin: 7vh 2vw;
+
+    /*margin: 7vh 2vw;*/
+
 }
 
 .hist{
@@ -182,6 +196,14 @@ th{
 
 tr:nth-child(even) {
     background-color: #dddddd;
+}
+
+.btn{
+    background-color: #EFEFEF;
+    width: 15%;
+     margin-left: auto;
+     margin-right: auto;
+
 }
 
 /*th,td{

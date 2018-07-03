@@ -20,7 +20,9 @@ $(document).ready(function(){
     $(".main").html(
     	`<div class="page-title">Welcome to Basketball Manager</div>
     	<div class="page-content">Are you ready for the challenge?</div>
-    	<div class="page-continue"><button onclick='startGame()'>Begin game</button></div>`
+    	
+
+      <button type="button" class="btn btn-outline-secondary" onclick="startGame()">Secondary</button>`
     	)
 });
 
