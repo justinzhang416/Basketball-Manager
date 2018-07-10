@@ -1,0 +1,10 @@
+MongoDB Work:
+
+- Create Database and connect with Node.(Are we going to have new user associated DB with each session). If not, need to come up with an account system
+- Create login system to store user information.
+- Be able to have personal DB that can all be dropped if you want to start the game over
+- Randomly generate num_teams * 8 players and place them into DB with stats, year and team
+- When creating view of players to recruit or walk-ons, don't add to DB until they are associated with the team
+- Have ability to query every team's roster using buttons on front-end
+- Be able to update and remove values in database depending on improvements to a player or graduation
+- Store personal stats for the user (seasons played, team, wins, titles etc)
