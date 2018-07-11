@@ -1,4 +1,4 @@
-import {firstNames,lastNames} from 'names.js'
+import {firstNames,lastNames} from './names.js'
 // Attributes: jump shot, driving, passing, defense, rebounding, work ethic
 export class Player{
 	constructor(name, offense, defense, year){
@@ -53,7 +53,7 @@ export function generateRecruits(){
 		namer = Math.floor(Math.random() * 3300 + 1)
 		var lname = lastNames[namer]
 		var fullName = fname + ' ' + lname
-		let r = new Player(fullName, Math.floor(Math.random() * 100 + 1),Math.floor(Math.random() * 10 + 1),1);
+		let r = new Player(fullName, Math.floor(Math.random() * 100 + 1),Math.floor(Math.random() * 100 + 1),1);
 		recruits.push(r);
 	}
 	return recruits;

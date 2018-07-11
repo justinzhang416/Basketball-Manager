@@ -4,7 +4,7 @@ import './App.css';
 
 import bball from './bball.png'; // relative path to image 
 
-import {Player, Team, generateGameData} from './manage.js';
+import {Player, Team, generateGameData, generateRecruits} from './manage.js';
 
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
@@ -80,11 +80,15 @@ class Content extends Component{
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleCheckBox = this.handleCheckBox.bind(this);
+    this.handleRecruitSubmit = this.handleRecruitSubmit.bind(this);
 
     this.nextPage = 'player';
+
+    this.recruits = [];
+    this.activeRecruits = [];
+
   }
-
-
 
   handleClick(e) {
     e.preventDefault();
@@ -99,12 +103,48 @@ class Content extends Component{
       }));
     }
     else if(this.nextPage == 'recruit'){
+      this.recruits =generateRecruits(); 
       this.setState(prevState => ({
         title: 'This Year Recruits',
-        content: <RecruitTable data={this.props.gameData.myTeam.players}/>
+        content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox} 
+        handleRecruitSubmit={this.handleRecruitSubmit}/>
       }));
     }
-    
+  }
+
+  handleCheckBox(e){
+    // e.preventDefault();
+    console.log(e);
+    const target = e.target;
+    if(target.checked){
+      this.activeRecruits.push(target.name);
+      
+    }
+    else{
+      var index = this.activeRecruits.indexOf(target.name);
+      if(index > -1){
+        this.activeRecruits.splice(index, 1);
+      }
+      
+    }
+    console.log(this.activeRecruits);
+  }
+
+  handleRecruitSubmit(e){
+    e.preventDefault();
+    console.log(e.target);
+    console.log(this.recruits);
+    for(let recruit of this.recruits){
+      
+      if(this.activeRecruits.includes(recruit.name)){
+        this.props.gameData.myTeam.players.push(recruit);
+      }
+    }
+    this.setState(prevState => ({
+        title: 'Your Roster',
+        content: <PlayerTable data={this.props.gameData.myTeam.players}/>,
+        buttonMsg: 'Start Recruiting'
+      }));
   }
 
   render(){
@@ -150,30 +190,48 @@ class PlayerTable extends Component{
 
 class RecruitTable extends Component{
   render(){
-    return (<ReactTable
-          data={this.props.data}
-          columns={[
-            {
-              Header: 'Name',
-              accessor: 'name' // String-based value accessors!
-            },
-            {
-              Header: 'Offense',
-              accessor: 'offense' // String-based value accessors!
-            },
-            {
-              Header: 'Defense',
-              accessor: 'defense' // String-based value accessors!
-            },
-            {
-              Header: 'Year',
-              accessor: 'year' // String-based value accessors!
-            }
-          ]}
-          defaultPageSize={8}
-          className="-striped -highlight"
-          showPagination= {false}
-        />)
+    var data = this.props.data;
+    for(let player of data){
+      player.checkbox = <input
+            name={player.name}
+            type="checkbox"
+            onChange={this.props.handleCheckBox}
+            />
+    }
+    return (
+      <form onSubmit={this.props.handleRecruitSubmit}>
+              <ReactTable
+                data={data}
+                columns={[
+                  {
+                    Header: 'Name',
+                    accessor: 'name' // String-based value accessors!
+                  },
+                  {
+                    Header: 'Offense',
+                    accessor: 'offense' // String-based value accessors!
+                  },
+                  {
+                    Header: 'Defense',
+                    accessor: 'defense' // String-based value accessors!
+                  },
+                  {
+                    Header: 'Year',
+                    accessor: 'year' // String-based value accessors!
+                  },
+                  {
+                    Header: 'Recruit?',
+                    accessor: 'checkbox' // String-based value accessors!
+                  }
+                ]}
+                defaultPageSize={8}
+                className="-striped -highlight"
+                showPagination= {false}
+              />
+
+              <button className="btn btn-default" type="submit" >Save</button>
+      </form>
+      )
   }
 }
 
