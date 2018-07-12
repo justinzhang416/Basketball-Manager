@@ -1,3 +1,4 @@
+@import url("sidebar.css");
 body {
   margin: 0;
   padding: 0;
@@ -12,16 +13,20 @@ body {
 }
 
 .bball{
-	height: 50px;
- 	width: 50px;
+	height: 100px;
+ 	width: 100px;
+ 	padding: 3vh, 3vw;
 }
-.navbar{
+.navbar-default{
+	margin-bottom: 0px;
 	display: flex;
     font-size: 3em;
     text-align: center;
     align-items: center;
     justify-content: center;
-    background-color: #CAEBF2;
+/*    background-color: #CAEBF2;
+    background-image: none;
+  	background-repeat: no-repeat;*/
     color: #A9A9A9;
     flex:15vh;
 }
@@ -31,16 +36,17 @@ body {
 	display: flex;
 	flex-direction: row;
 	min-width: 100vw;
+	padding: 0px 0px;
 }
 
-.sidebar-nav{
-	background: #EFEFEF;
+.sidebar-container{
+	/*background: #EFEFEF;*/
 	flex: 15vw;
-	display: flex;
+	/*display: flex;
     flex-direction: column;
-    text-align: center;
-    margin: 0vh 0vw;
-    padding: 2vh 2vw;
+    text-align: center;*/
+    /*margin: 0vh 0vw;
+    padding: 2vh 2vw;*/
 }
 
 .content{
@@ -49,6 +55,7 @@ body {
 	display: flex;
     flex-direction:column;
     text-align: center;
+    overflow: auto;
 }
 
 .page-title{
@@ -71,4 +78,6 @@ body {
     /*width: 25%;
     margin-left: auto;
     margin-right: auto;*/
+    padding-bottom: 20px;
 }
+
