@@ -13,9 +13,12 @@ export class Team{
 	constructor(name, players){
 		this.name = name;
   		this.players = players;
+  		this.w = 0;
+  		this.l = 0;
 	}
 }
 
+// This will be replaced by a server call for a particular user's data
 export function generateGameData(){
 	let data = {};
 

@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-import bball from './bball.png'; // relative path to image 
+// import bball from './bball.png'; // relative path to image 
 
 import {Player, Team, generateGameData, generateRecruits} from './manage.js';
+import {PlayerTable, RecruitTable, SeasonTable} from './Tables.js';
+
 
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
@@ -22,9 +24,7 @@ class Banner extends Component{
   render() {
     return (
       <div className="navbar navbar-default">
-      
       <div> Basketball Manager </div>
-      
       </div>
     );
   }
@@ -33,15 +33,134 @@ class Banner extends Component{
 class App extends Component {
   constructor(props) {
     super(props);
-    this.gameData = generateGameData();
+    this.handleNewPage = this.handleNewPage.bind(this);
+    this.handleCheckBox = this.handleCheckBox.bind(this);
+    this.handleRecruitSubmit = this.handleRecruitSubmit.bind(this);
+
+    this.state = {
+      gameData: generateGameData(),
+      title: 'Welcome to Basketball Manager',
+      content: 'Are you up for the challenge?',
+      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNewPage}>Begin</button>
+    }
+
+    this.seasonData = {
+      temp: new Array(),
+      data: 0,
+      numDays : 0,
+      halfSize : 0,
+      teamsSize : 0
+    }
+
+    this.recruits = [];
+    this.activeRecruits = [];
+
+  }
+
+  startSeason(){
+    let teams = this.props.gameData.teams;
+    this.seasonData.temp = new Array();
+    this.seasonData.temp.push.apply(this.seasonData.temp,teams);
+    this.seasonData.temp.splice(0,1);
+    this.numDays = (teams.length - 1); // Days needed to complete tournament
+    this.halfSize = teams.length / 2;
+    this.teamsSize = this.seasonData.temp.length;
+  }
+
+  // playGames(){
+
+
+  //   var teamIdx = day % teamsSize;
+  //   scores += "<p>" + playGame(temp[teamIdx],teams[0]) + "<p>";
+
+  //   for (var idx = 1; idx < halfSize; idx++)
+  //   {
+  //     var firstTeam = temp[(day + idx) % teamsSize];
+  //     var secondTeam = temp[(day  + teamsSize - idx) % teamsSize];
+  //          playGame(firstTeam, secondTeam);
+  //   }
+  //   day++;
+
+  //     $(".scores").html(scores);
+  //     $(".standings").html(generateStandings());
+  //     if(numDays == day){
+  //         $(".page-continue").html(`<button onclick='initPlayoffs()'>Begin Playoffs</button>`);
+  //         //$(".page-continue").html(`<button onclick='endSeason()'>Season Done</button>`);
+  //     }
+  //   }
+
+  handleCheckBox(e){
+    // e.preventDefault();
+    console.log(e);
+    const target = e.target;
+    if(target.checked){
+      this.activeRecruits.push(target.name);
+    }
+    else{
+      var index = this.activeRecruits.indexOf(target.name);
+      if(index > -1){
+        this.activeRecruits.splice(index, 1);
+      }
+    }
+  }
+
+  handleRecruitSubmit(e){
+    e.preventDefault();
+    console.log(e.target);
+    console.log(this.recruits);
+    for(let recruit of this.recruits){
+      if(this.activeRecruits.includes(recruit.name)){
+        this.state.gameData.myTeam.players.push(recruit);
+      }
+    }
+    this.setState(prevState => ({
+        title: 'Your Roster',
+        content: <PlayerTable data={this.state.gameData.myTeam.players}/>,
+        button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
+      }));
+  }
+
+  handleNewPage(e){
+    console.log(e.target.getAttribute("value"));
+    if(e.target.getAttribute("value") == "player"){
+      this.setState(prevState => ({
+        title: 'Your Roster',
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+      }));
+    }
+    else if(e.target.getAttribute("value") == "roster"){
+      this.setState(prevState => ({
+        title: 'Your Roster',
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+        button: ""
+      }));
+    }
+    else if(e.target.getAttribute("value") == 'recruit'){
+      this.recruits =generateRecruits(); 
+      this.setState(prevState => ({
+        title: 'This Year Recruits',
+        content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox} 
+        handleRecruitSubmit={this.handleRecruitSubmit}/>,
+        button: ""
+      }));
+    }
+    else if(e.target.getAttribute("value") == 'start'){
+      this.setState(prevState => ({
+        title: 'Current Standings',
+        content: <SeasonTable data={this.state.gameData.teams} />,
+        button: ""
+      }));
+    }
   }
   render() {
     return (
       <div className="wrapper">
          <Banner />
          <div className="container">
-            <Sidebar gameData={this.gameData}/>
-            <Content gameData={this.gameData}/>
+            <Sidebar gameData={this.state.gameData} handleNewPage = {this.handleNewPage}/>
+            <Content gameData={this.state.gameData} title = {this.state.title} content = {this.state.content}
+            button = {this.state.button}/>
          </div>
        </div>
     );
@@ -57,7 +176,7 @@ class Sidebar extends Component{
             <nav className="nav-sidebar">
                 <ul className="nav">
                     <li><a href="javascript:;">Home</a></li>
-                    <li><a href="javascript:;">Roster</a></li>
+                    <li><a href="javascript:;" value="roster" onClick={this.props.handleNewPage}>Roster</a></li>
                     <li><a href="javascript:;">Standings</a></li>
                     <li><a href="javascript:;">Scouting</a></li>
                     <li className="nav-divider"></li>
@@ -75,12 +194,12 @@ class Content extends Component{
     super(props);
     
 
-    this.handleNextPage = this.handleNextPage.bind(this);
-    this.handleCheckBox = this.handleCheckBox.bind(this);
-    this.handleRecruitSubmit = this.handleRecruitSubmit.bind(this);
+    // this.handleNextPage = this.handleNextPage.bind(this);
+    // this.handleCheckBox = this.handleCheckBox.bind(this);
+    // this.handleRecruitSubmit = this.handleRecruitSubmit.bind(this);
 
-    this.recruits = [];
-    this.activeRecruits = [];
+    // this.recruits = [];
+    // this.activeRecruits = [];
 
     this.seasonData = {
       temp: new Array(),
@@ -93,7 +212,7 @@ class Content extends Component{
     this.state = {
       title: 'Welcome to Basketball Manager',
       content: 'Are you up for the challenge?',
-      button: <button type="button" className="btn btn-outline-secondary" value = "player" onClick={this.handleNextPage}>Begin</button>
+      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNextPage}>Begin</button>
     };
 
   }
@@ -130,147 +249,72 @@ class Content extends Component{
   //     }
   //   }
 
-  handleNextPage(e) {
-    e.preventDefault();
-    console.log(e.target.value);
+  // handleNextPage(e) {
+  //   e.preventDefault();
+  //   console.log(e.target.value);
 
-    if(e.target.value == 'player'){
-      this.setState(prevState => ({
-        title: 'Your Roster',
-        content: <div><PlayerTable data={this.props.gameData.myTeam.players}/><PlayerTable data={this.props.gameData.myTeam.players}/><PlayerTable data={this.props.gameData.myTeam.players}/></div> ,
-        button: <button type="button" className="btn btn-outline-secondary" value = "recruit" onClick={this.handleNextPage}>Recruit!</button>
-      }));
-    }
-    else if(e.target.value == 'recruit'){
-      this.recruits =generateRecruits(); 
-      this.setState(prevState => ({
-        title: 'This Year Recruits',
-        content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox} 
-        handleRecruitSubmit={this.handleRecruitSubmit}/>,
-        button: ""
-      }));
-    }
-  }
+  //   this.props.test = "something else";
 
-  handleCheckBox(e){
-    // e.preventDefault();
-    console.log(e);
-    const target = e.target;
-    if(target.checked){
-      this.activeRecruits.push(target.name);
+  //   if(e.target.value == 'player'){
+  //     this.setState(prevState => ({
+  //       title: 'Your Roster',
+  //       content: <div><PlayerTable data={this.props.gameData.myTeam.players}/><PlayerTable data={this.props.gameData.myTeam.players}/><PlayerTable data={this.props.gameData.myTeam.players}/></div> ,
+  //       button: <button type="button" className="btn btn-outline-secondary" value = "recruit" onClick={this.handleNextPage}>Recruit!</button>
+  //     }));
+  //   }
+  //   else if(e.target.value == 'recruit'){
+  //     this.recruits =generateRecruits(); 
+  //     this.setState(prevState => ({
+  //       title: 'This Year Recruits',
+  //       content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox} 
+  //       handleRecruitSubmit={this.handleRecruitSubmit}/>,
+  //       button: ""
+  //     }));
+  //   }
+  // }
+
+  // handleCheckBox(e){
+  //   // e.preventDefault();
+  //   console.log(e);
+  //   const target = e.target;
+  //   if(target.checked){
+  //     this.activeRecruits.push(target.name);
       
-    }
-    else{
-      var index = this.activeRecruits.indexOf(target.name);
-      if(index > -1){
-        this.activeRecruits.splice(index, 1);
-      }
+  //   }
+  //   else{
+  //     var index = this.activeRecruits.indexOf(target.name);
+  //     if(index > -1){
+  //       this.activeRecruits.splice(index, 1);
+  //     }
       
-    }
-    console.log(this.activeRecruits);
-  }
+  //   }
+  //   console.log(this.activeRecruits);
+  // }
 
-  handleRecruitSubmit(e){
-    e.preventDefault();
-    console.log(e.target);
-    console.log(this.recruits);
-    for(let recruit of this.recruits){
-      if(this.activeRecruits.includes(recruit.name)){
-        this.props.gameData.myTeam.players.push(recruit);
-      }
-    }
-    this.setState(prevState => ({
-        title: 'Your Roster',
-        content: <PlayerTable data={this.props.gameData.myTeam.players}/>,
-        button: 'Start Recruiting'
-      }));
-  }
+  // handleRecruitSubmit(e){
+  //   e.preventDefault();
+  //   console.log(e.target);
+  //   console.log(this.recruits);
+  //   for(let recruit of this.recruits){
+  //     if(this.activeRecruits.includes(recruit.name)){
+  //       this.props.gameData.myTeam.players.push(recruit);
+  //     }
+  //   }
+  //   this.setState(prevState => ({
+  //       title: 'Your Roster',
+  //       content: <PlayerTable data={this.props.gameData.myTeam.players}/>,
+  //       button: 'Start Recruiting'
+  //     }));
+  // }
 
   render(){
     return(
       <div className ="content">
-        <div className="page-title">{this.state.title}</div>
-        <div className="page-content">{this.state.content}</div>
-        <div className="page-continue">{this.state.button}</div>
+        <div className="page-title">{this.props.title}</div>
+        <div className="page-content">{this.props.content}</div>
+        <div className="page-continue">{this.props.button}</div>
       </div>
     );
-  }
-}
-
-class PlayerTable extends Component{
-  render(){
-    return (<ReactTable
-          data={this.props.data}
-          columns={[
-            {
-              Header: 'Name',
-              accessor: 'name' // String-based value accessors!
-            },
-            {
-              Header: 'Offense',
-              accessor: 'offense' // String-based value accessors!
-            },
-            {
-              Header: 'Defense',
-              accessor: 'defense' // String-based value accessors!
-            },
-            {
-              Header: 'Year',
-              accessor: 'year' // String-based value accessors!
-            }
-          ]}
-          defaultPageSize={8}
-          className="-striped -highlight"
-          showPagination= {false}
-        />)
-  }
-}
-
-
-class RecruitTable extends Component{
-  render(){
-    var data = this.props.data;
-    for(let player of data){
-      player.checkbox = <input
-            name={player.name}
-            type="checkbox"
-            onChange={this.props.handleCheckBox}
-            />
-    }
-    return (
-      <form onSubmit={this.props.handleRecruitSubmit}>
-              <ReactTable
-                data={data}
-                columns={[
-                  {
-                    Header: 'Name',
-                    accessor: 'name' // String-based value accessors!
-                  },
-                  {
-                    Header: 'Offense',
-                    accessor: 'offense' // String-based value accessors!
-                  },
-                  {
-                    Header: 'Defense',
-                    accessor: 'defense' // String-based value accessors!
-                  },
-                  {
-                    Header: 'Year',
-                    accessor: 'year' // String-based value accessors!
-                  },
-                  {
-                    Header: 'Recruit?',
-                    accessor: 'checkbox' // String-based value accessors!
-                  }
-                ]}
-                defaultPageSize={8}
-                className="-striped -highlight"
-                showPagination= {false}
-              />
-
-              <button className="btn btn-default" type="submit" >Save</button>
-      </form>
-      )
   }
 }
 
