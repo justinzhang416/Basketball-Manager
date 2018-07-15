@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-// import bball from './bball.png'; // relative path to image 
+// import bball from './bball.png'; // relative path to image
 
 import {Player, Team, generateGameData, generateRecruits} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable} from './Tables.js';
@@ -137,10 +137,10 @@ class App extends Component {
       }));
     }
     else if(e.target.getAttribute("value") == 'recruit'){
-      this.recruits =generateRecruits(); 
+      this.recruits =generateRecruits();
       this.setState(prevState => ({
         title: 'This Year Recruits',
-        content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox} 
+        content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox}
         handleRecruitSubmit={this.handleRecruitSubmit}/>,
         button: ""
       }));
@@ -192,7 +192,7 @@ class Sidebar extends Component{
 class Content extends Component{
   constructor(props) {
     super(props);
-    
+
 
     // this.handleNextPage = this.handleNextPage.bind(this);
     // this.handleCheckBox = this.handleCheckBox.bind(this);
@@ -263,10 +263,10 @@ class Content extends Component{
   //     }));
   //   }
   //   else if(e.target.value == 'recruit'){
-  //     this.recruits =generateRecruits(); 
+  //     this.recruits =generateRecruits();
   //     this.setState(prevState => ({
   //       title: 'This Year Recruits',
-  //       content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox} 
+  //       content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox}
   //       handleRecruitSubmit={this.handleRecruitSubmit}/>,
   //       button: ""
   //     }));
@@ -279,14 +279,14 @@ class Content extends Component{
   //   const target = e.target;
   //   if(target.checked){
   //     this.activeRecruits.push(target.name);
-      
+
   //   }
   //   else{
   //     var index = this.activeRecruits.indexOf(target.name);
   //     if(index > -1){
   //       this.activeRecruits.splice(index, 1);
   //     }
-      
+
   //   }
   //   console.log(this.activeRecruits);
   // }
