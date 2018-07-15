@@ -89,7 +89,7 @@ class App extends Component {
         content: <div><SeasonTable data={this.state.gameData.teams}/> <ScoreTable data={scores} /></div>,
     }));
     if(this.seasonData == this.seasonData){
-       
+
     }
   }
 
@@ -113,12 +113,12 @@ class App extends Component {
     console.log(e.target);
     console.log(this.recruits);
     for(let recruit of this.recruits){
-      if(this.activeRecruits.includes(recruit.name)){
+      if(this.activeRecruits.includes(recruit.name) ){
         this.state.gameData.myTeam.players.push(recruit);
       }
     }
     this.setState(prevState => ({
-        title: 'Your Roster',
+        title: 'Your Roster: ' + 'Rating:' + this.state.gameData.myTeam.rating,
         content: <PlayerTable data={this.state.gameData.myTeam.players}/>,
         button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
       }));
