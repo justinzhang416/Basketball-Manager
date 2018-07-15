@@ -15,6 +15,7 @@ export class Team{
   		this.players = players;
   		this.w = 0;
   		this.l = 0;
+  		this.rating = 80
 	}
 }
 
@@ -61,5 +62,23 @@ export function generateRecruits(){
 	}
 	return recruits;
 }
+
+// Plays game between two teams, return result as string.
+// TODO: Improve shitty ass algorithm
+export function playGame(t1,t2){
+	var firstScore = Math.floor(Math.random() * t1.rating + .2* t1.rating);
+	var secondScore = Math.floor(Math.random() * t2.rating + .2*t2.rating);
+	let result = t1.name + ": " + firstScore + ", " + t2.name + ": " + secondScore;
+	if(firstScore > secondScore){
+		t1.w++;
+		t2.l++;
+	}
+	else{
+		t1.l++;
+		t2.w++;
+	}
+	return {name1: t1.name, score1: firstScore,name2: t2.name, score2: secondScore};
+}
+
 
 
