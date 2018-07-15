@@ -29,6 +29,34 @@ export class PlayerTable extends Component{
         />)
   }
 }
+export class ScoreTable extends Component{
+  render(){
+    return (<ReactTable
+          data={this.props.data}
+          columns={[
+            {
+              Header: 'Home',
+              accessor: 'name1' // String-based value accessors!
+            },
+            {
+              Header: 'Score',
+              accessor: 'score1' // String-based value accessors!
+            },
+            {
+              Header: 'Away',
+              accessor: 'name2' // String-based value accessors!
+            },
+            {
+              Header: 'Score',
+              accessor: 'score2' // String-based value accessors!
+            }
+          ]}
+          defaultPageSize={8}
+          className="-striped -highlight"
+          showPagination= {false}
+        />)
+  }
+}
 
 export class SeasonTable extends Component{
   render(){

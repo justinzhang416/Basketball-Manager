@@ -4,8 +4,8 @@ import './App.css';
 
 // import bball from './bball.png'; // relative path to image
 
-import {Player, Team, generateGameData, generateRecruits} from './manage.js';
-import {PlayerTable, RecruitTable, SeasonTable} from './Tables.js';
+import {Player, Team, generateGameData, generateRecruits, playGame} from './manage.js';
+import {PlayerTable, RecruitTable, SeasonTable, ScoreTable} from './Tables.js';
 
 
 import ReactTable from "react-table";
@@ -36,6 +36,8 @@ class App extends Component {
     this.handleNewPage = this.handleNewPage.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.handleRecruitSubmit = this.handleRecruitSubmit.bind(this);
+    this.playGames = this.playGames.bind(this);
+    this.startSeason = this.startSeason.bind(this);
 
     this.state = {
       gameData: generateGameData(),
@@ -49,7 +51,8 @@ class App extends Component {
       data: 0,
       numDays : 0,
       halfSize : 0,
-      teamsSize : 0
+      teamsSize : 0,
+      day: 0
     }
 
     this.recruits = [];
@@ -58,36 +61,37 @@ class App extends Component {
   }
 
   startSeason(){
-    let teams = this.props.gameData.teams;
+    let teams = this.state.gameData.teams;
     this.seasonData.temp = new Array();
     this.seasonData.temp.push.apply(this.seasonData.temp,teams);
     this.seasonData.temp.splice(0,1);
-    this.numDays = (teams.length - 1); // Days needed to complete tournament
-    this.halfSize = teams.length / 2;
-    this.teamsSize = this.seasonData.temp.length;
+    this.seasonData.numDays = (teams.length - 1); // Days needed to complete tournament
+    this.seasonData.halfSize = teams.length / 2;
+    this.seasonData.teamsSize = this.seasonData.temp.length;
+    this.seasonData.day = 0;
+    console.log(this.seasonData)
   }
 
-  // playGames(){
+  playGames(){
+    let scores = [];
+    var teamIdx = this.seasonData.day % this.seasonData.teamsSize;
+    scores.push(playGame(this.seasonData.temp[teamIdx],this.state.gameData.teams[0]));
 
+    for (var idx = 1; idx < this.seasonData.halfSize; idx++)
+    {
+      var firstTeam = this.seasonData.temp[(this.seasonData.day + idx) % this.seasonData.teamsSize];
+      var secondTeam = this.seasonData.temp[(this.seasonData.day  + this.seasonData.teamsSize - idx) % this.seasonData.teamsSize];
+      scores.push(playGame(firstTeam, secondTeam));
+    }
+    this.seasonData.day++;
 
-  //   var teamIdx = day % teamsSize;
-  //   scores += "<p>" + playGame(temp[teamIdx],teams[0]) + "<p>";
-
-  //   for (var idx = 1; idx < halfSize; idx++)
-  //   {
-  //     var firstTeam = temp[(day + idx) % teamsSize];
-  //     var secondTeam = temp[(day  + teamsSize - idx) % teamsSize];
-  //          playGame(firstTeam, secondTeam);
-  //   }
-  //   day++;
-
-  //     $(".scores").html(scores);
-  //     $(".standings").html(generateStandings());
-  //     if(numDays == day){
-  //         $(".page-continue").html(`<button onclick='initPlayoffs()'>Begin Playoffs</button>`);
-  //         //$(".page-continue").html(`<button onclick='endSeason()'>Season Done</button>`);
-  //     }
-  //   }
+    this.setState(prevState => ({
+        content: <div><SeasonTable data={this.state.gameData.teams}/> <ScoreTable data={scores} /></div>,
+    }));
+    if(this.seasonData == this.seasonData){
+       
+    }
+  }
 
   handleCheckBox(e){
     // e.preventDefault();
@@ -146,10 +150,11 @@ class App extends Component {
       }));
     }
     else if(e.target.getAttribute("value") == 'start'){
+      this.startSeason();
       this.setState(prevState => ({
         title: 'Current Standings',
         content: <SeasonTable data={this.state.gameData.teams} />,
-        button: ""
+        button: <button type="button" className="btn btn-default" onClick={this.playGames}>Play Games!</button>
       }));
     }
   }
