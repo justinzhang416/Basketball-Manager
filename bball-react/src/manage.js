@@ -6,6 +6,7 @@ export class Player{
 		this.offense = offense;
 		this.defense = defense;
 	  	this.year = year;
+	  	this.key = name;
 	}
 }
 

@@ -62,13 +62,13 @@ body {
     color: #A9A9A9;
     text-align: center;
     font-size: 1.5em;
-    margin: 7vh 2vw;
+    margin: 5vh 2vw;
 }
 
 .page-content{
     color: #A9A9A9;
     text-align: center;
-    margin: 2vh 2vw;
+    /*margin: 2vh 2vw;*/
 }
 
 .page-continue{
@@ -78,6 +78,6 @@ body {
     /*width: 25%;
     margin-left: auto;
     margin-right: auto;*/
-    padding-bottom: 20px;
+    padding: 2vh 0vw;
 }
 

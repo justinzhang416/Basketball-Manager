@@ -23,7 +23,7 @@ export class PlayerTable extends Component{
               accessor: 'year' // String-based value accessors!
             }
           ]}
-          defaultPageSize={8}
+          defaultPageSize={this.props.data.length}
           className="-striped -highlight"
           showPagination= {false}
         />)
@@ -51,7 +51,7 @@ export class ScoreTable extends Component{
               accessor: 'score2' // String-based value accessors!
             }
           ]}
-          defaultPageSize={8}
+          defaultPageSize={this.props.data.length}
           className="-striped -highlight"
           showPagination= {false}
         />)
@@ -76,7 +76,7 @@ export class SeasonTable extends Component{
               accessor: 'l' // String-based value accessors!
             },
           ]}
-          defaultPageSize={8}
+          defaultPageSize={this.props.data.length}
           className="-striped -highlight"
           showPagination= {false}
         />)
@@ -86,14 +86,16 @@ export class SeasonTable extends Component{
 
 export class RecruitTable extends Component{
   render(){
-    var data = this.props.data;
+    var data = JSON.parse(JSON.stringify(this.props.data));
     for(let player of data){
       player.checkbox = <input
-            name={player.name}
+            key = {player.name}
+            name= {player.name}
             type="checkbox"
             onChange={this.props.handleCheckBox}
             />
     }
+    console.log(this.props.data.length)
     return (
       <form onSubmit={this.props.handleRecruitSubmit}>
               <ReactTable
@@ -120,12 +122,11 @@ export class RecruitTable extends Component{
                     accessor: 'checkbox' // String-based value accessors!
                   }
                 ]}
-                defaultPageSize={8}
+                pageSize={data.length}
                 className="-striped -highlight"
                 showPagination= {false}
               />
 
-              <button className="btn btn-default" type="submit" >Save</button>
       </form>
       )
   }

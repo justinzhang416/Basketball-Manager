@@ -38,6 +38,7 @@ class App extends Component {
     this.handleRecruitSubmit = this.handleRecruitSubmit.bind(this);
     this.playGames = this.playGames.bind(this);
     this.startSeason = this.startSeason.bind(this);
+    this.handleFinalRoster = this.handleFinalRoster.bind(this);
 
     this.state = {
       gameData: generateGameData(),
@@ -55,9 +56,8 @@ class App extends Component {
       day: 0
     }
 
-    this.recruits = [];
+    this.recruitMap = {};
     this.activeRecruits = [];
-
   }
 
   startSeason(){
@@ -86,7 +86,9 @@ class App extends Component {
     this.seasonData.day++;
 
     this.setState(prevState => ({
-        content: <div><SeasonTable data={this.state.gameData.teams}/> <ScoreTable data={scores} /></div>,
+        content: <div><SeasonTable data={this.state.gameData.teams}/> 
+        <div className="page-title">{"Scores"}</div>
+        <ScoreTable data={scores} /></div>,
     }));
     if(this.seasonData == this.seasonData){
 
@@ -98,7 +100,7 @@ class App extends Component {
     console.log(e);
     const target = e.target;
     if(target.checked){
-      this.activeRecruits.push(target.name);
+      this.activeRecruits.push(this.recruitMap[target.name]);
     }
     else{
       var index = this.activeRecruits.indexOf(target.name);
@@ -108,24 +110,44 @@ class App extends Component {
     }
   }
 
+  handleFinalRoster(e){
+    // e.preventDefault();
+    this.state.gameData.myTeam.players =this.activeRecruits;
+    // 'Rating:' + this.state.gameData.myTeam.rating
+    this.setState(prevState => ({
+        title: 'Final Roster - ' + 'Rating: ' + this.state.gameData.myTeam.rating,
+        content: <PlayerTable data={this.state.gameData.myTeam.players}/>,
+        button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
+    }));
+  }
+
   handleRecruitSubmit(e){
     e.preventDefault();
     console.log(e.target);
-    console.log(this.recruits);
-    for(let recruit of this.recruits){
-      if(this.activeRecruits.includes(recruit.name) ){
-        this.state.gameData.myTeam.players.push(recruit);
-      }
+    console.log(this.activeRecruits);
+
+    let temp = this.state.gameData.myTeam.players.slice();
+    // for(let recruit of this.recruits){
+    //   if(this.activeRecruits.includes(recruit.name) ){
+    //     temp.push(recruit);
+    //   }
+    // }
+
+    for(let player of this.activeRecruits){
+      temp.push(player);
     }
+    console.log(temp);
+    // 'Rating:' + this.state.gameData.myTeam.rating
     this.setState(prevState => ({
-        title: 'Your Roster: ' + 'Rating:' + this.state.gameData.myTeam.rating,
-        content: <PlayerTable data={this.state.gameData.myTeam.players}/>,
-        button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
+        title: 'Choose Final Roster (8 Players)',
+        content: <RecruitTable data={temp} handleCheckBox={this.handleCheckBox} />,
+        button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
       }));
   }
 
   handleNewPage(e){
-    console.log(e.target.getAttribute("value"));
+
+  
     if(e.target.getAttribute("value") == "player"){
       this.setState(prevState => ({
         title: 'Your Roster',
@@ -133,6 +155,7 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
       }));
     }
+
     else if(e.target.getAttribute("value") == "roster"){
       this.setState(prevState => ({
         title: 'Your Roster',
@@ -140,15 +163,23 @@ class App extends Component {
         button: ""
       }));
     }
+
     else if(e.target.getAttribute("value") == 'recruit'){
-      this.recruits =generateRecruits();
+      let recruits =generateRecruits();
+      this.recruitMap = {};
+      for(let r of recruits){
+        this.recruitMap[r.name] = r;
+      }
+      for(let p of this.state.gameData.myTeam.players){
+        this.recruitMap[p.name] = p;
+      }
       this.setState(prevState => ({
         title: 'This Year Recruits',
-        content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox}
-        handleRecruitSubmit={this.handleRecruitSubmit}/>,
-        button: ""
+        content: <RecruitTable data={recruits} handleCheckBox={this.handleCheckBox}/>,
+        button: <button type="button" className="btn btn-default" onClick={this.handleRecruitSubmit}>Submit!</button>
       }));
     }
+
     else if(e.target.getAttribute("value") == 'start'){
       this.startSeason();
       this.setState(prevState => ({
@@ -171,8 +202,6 @@ class App extends Component {
     );
   }
 }
-
-
 
 class Sidebar extends Component{
   render(){
@@ -197,121 +226,7 @@ class Sidebar extends Component{
 class Content extends Component{
   constructor(props) {
     super(props);
-
-
-    // this.handleNextPage = this.handleNextPage.bind(this);
-    // this.handleCheckBox = this.handleCheckBox.bind(this);
-    // this.handleRecruitSubmit = this.handleRecruitSubmit.bind(this);
-
-    // this.recruits = [];
-    // this.activeRecruits = [];
-
-    this.seasonData = {
-      temp: new Array(),
-      data: 0,
-      numDays : 0,
-      halfSize : 0,
-      teamsSize : 0
-    }
-
-    this.state = {
-      title: 'Welcome to Basketball Manager',
-      content: 'Are you up for the challenge?',
-      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNextPage}>Begin</button>
-    };
-
   }
-
-  startSeason(){
-    let teams = this.props.gameData.teams;
-    this.seasonData.temp = new Array();
-    this.seasonData.temp.push.apply(this.seasonData.temp,teams);
-    this.seasonData.temp.splice(0,1);
-    this.numDays = (teams.length - 1); // Days needed to complete tournament
-    this.halfSize = teams.length / 2;
-    this.teamsSize = this.seasonData.temp.length;
-  }
-
-  // playGames(){
-
-
-  //   var teamIdx = day % teamsSize;
-  //   scores += "<p>" + playGame(temp[teamIdx],teams[0]) + "<p>";
-
-  //   for (var idx = 1; idx < halfSize; idx++)
-  //   {
-  //     var firstTeam = temp[(day + idx) % teamsSize];
-  //     var secondTeam = temp[(day  + teamsSize - idx) % teamsSize];
-  //          playGame(firstTeam, secondTeam);
-  //   }
-  //   day++;
-
-  //     $(".scores").html(scores);
-  //     $(".standings").html(generateStandings());
-  //     if(numDays == day){
-  //         $(".page-continue").html(`<button onclick='initPlayoffs()'>Begin Playoffs</button>`);
-  //         //$(".page-continue").html(`<button onclick='endSeason()'>Season Done</button>`);
-  //     }
-  //   }
-
-  // handleNextPage(e) {
-  //   e.preventDefault();
-  //   console.log(e.target.value);
-
-  //   this.props.test = "something else";
-
-  //   if(e.target.value == 'player'){
-  //     this.setState(prevState => ({
-  //       title: 'Your Roster',
-  //       content: <div><PlayerTable data={this.props.gameData.myTeam.players}/><PlayerTable data={this.props.gameData.myTeam.players}/><PlayerTable data={this.props.gameData.myTeam.players}/></div> ,
-  //       button: <button type="button" className="btn btn-outline-secondary" value = "recruit" onClick={this.handleNextPage}>Recruit!</button>
-  //     }));
-  //   }
-  //   else if(e.target.value == 'recruit'){
-  //     this.recruits =generateRecruits();
-  //     this.setState(prevState => ({
-  //       title: 'This Year Recruits',
-  //       content: <RecruitTable data={this.recruits} handleCheckBox={this.handleCheckBox}
-  //       handleRecruitSubmit={this.handleRecruitSubmit}/>,
-  //       button: ""
-  //     }));
-  //   }
-  // }
-
-  // handleCheckBox(e){
-  //   // e.preventDefault();
-  //   console.log(e);
-  //   const target = e.target;
-  //   if(target.checked){
-  //     this.activeRecruits.push(target.name);
-
-  //   }
-  //   else{
-  //     var index = this.activeRecruits.indexOf(target.name);
-  //     if(index > -1){
-  //       this.activeRecruits.splice(index, 1);
-  //     }
-
-  //   }
-  //   console.log(this.activeRecruits);
-  // }
-
-  // handleRecruitSubmit(e){
-  //   e.preventDefault();
-  //   console.log(e.target);
-  //   console.log(this.recruits);
-  //   for(let recruit of this.recruits){
-  //     if(this.activeRecruits.includes(recruit.name)){
-  //       this.props.gameData.myTeam.players.push(recruit);
-  //     }
-  //   }
-  //   this.setState(prevState => ({
-  //       title: 'Your Roster',
-  //       content: <PlayerTable data={this.props.gameData.myTeam.players}/>,
-  //       button: 'Start Recruiting'
-  //     }));
-  // }
-
   render(){
     return(
       <div className ="content">
