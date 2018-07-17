@@ -14,11 +14,6 @@ import 'react-table/react-table.css';
 
 // import './../node_modules/react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
-// import './../node_modules/react-bootstrap-table/css/react-bootstrap-table.css'
-
-
-
-
 class Banner extends Component{
   // <img src={bball} alt="" className="bball"/>
   render() {
@@ -126,28 +121,45 @@ class App extends Component {
     console.log(e.target);
     console.log(this.activeRecruits);
 
-    let temp = this.state.gameData.myTeam.players.slice();
+    // let temp = this.state.gameData.myTeam.players.slice();
     // for(let recruit of this.recruits){
     //   if(this.activeRecruits.includes(recruit.name) ){
     //     temp.push(recruit);
     //   }
     // }
 
-    for(let player of this.activeRecruits){
-      temp.push(player);
-    }
-    console.log(temp);
+    // for(let player of this.activeRecruits){
+    //   temp.push(player);
+    // }
+    // console.log(temp);
     // 'Rating:' + this.state.gameData.myTeam.rating
+
+    // TODO: HERE WE ADD RECRUITING ALGO!!!
+    let success = this.activeRecruits;
+    this.activeRecruits = []
+
+    let walkons =generateRecruits();
+    for(let r of walkons){
+        this.recruitMap[r.name] = r;
+    }
+
+
     this.setState(prevState => ({
         title: 'Choose Final Roster (8 Players)',
-        content: <RecruitTable data={temp} handleCheckBox={this.handleCheckBox} />,
+        content: <div>
+        <p className="mini-title">Current Roster</p>
+        <RecruitTable data={this.state.gameData.myTeam.players} handleCheckBox={this.handleCheckBox} />
+        
+        <p className="mini-title">Successfully Recruited</p>
+        <RecruitTable data={success} handleCheckBox={this.handleCheckBox} />
+     
+        <p className="mini-title">Walk Ons</p>
+        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox} /></div>,
         button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
       }));
   }
 
   handleNewPage(e){
-
-  
     if(e.target.getAttribute("value") == "player"){
       this.setState(prevState => ({
         title: 'Your Roster',
