@@ -40,7 +40,7 @@ class App extends Component {
       gameData: generateGameData(),
       title: 'Welcome to Basketball Manager',
       content: 'Are you up for the challenge?',
-      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNewPage}>Begin</button>
+      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNewPage}>Begin</button>,
     }
 
     this.seasonData = {
@@ -111,11 +111,31 @@ class App extends Component {
       this.activeRecruits.push(this.recruitMap[target.name]);
     }
     else{
-      var index = this.activeRecruits.indexOf(target.name);
+      var index = this.activeRecruits.indexOf(this.recruitMap[target.name]);
       if(index > -1){
         this.activeRecruits.splice(index, 1);
       }
     }
+
+    
+    if(e.target.getAttribute("final") == "true"){
+      this.setState(prevState => ({
+          checkboxActive: false
+        }));
+      console.log("yo")
+      this.setState(prevState => ({
+         button: <button disabled = {!(this.activeRecruits.length == 8)} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>,
+         checkboxActive: true
+      }));
+
+      if(this.activeRecruits.length == 8){
+        this.setState(prevState => ({
+          checkboxActive: false
+        }));
+      }
+    }
+
+    console.log(this.state.buttonActive)
   }
 
   handleFinalRoster(e){
@@ -133,19 +153,6 @@ class App extends Component {
     e.preventDefault();
     console.log(e.target);
     console.log(this.activeRecruits);
-
-    // let temp = this.state.gameData.myTeam.players.slice();
-    // for(let recruit of this.recruits){
-    //   if(this.activeRecruits.includes(recruit.name) ){
-    //     temp.push(recruit);
-    //   }
-    // }
-
-    // for(let player of this.activeRecruits){
-    //   temp.push(player);
-    // }
-    // console.log(temp);
-    // 'Rating:' + this.state.gameData.myTeam.rating
 
     let recruitsZ = []
     var potLen = this.activeRecruits.length;
@@ -168,14 +175,14 @@ class App extends Component {
         title: 'Choose Final Roster (8 Players)',
         content: <div>
         <p className="mini-title">Current Roster</p>
-        <RecruitTable data={this.state.gameData.myTeam.players} handleCheckBox={this.handleCheckBox} />
+        <RecruitTable data={this.state.gameData.myTeam.players} handleCheckBox={this.handleCheckBox} final="true" />
 
         <p className="mini-title">Successfully Recruited</p>
-        <RecruitTable data={success} handleCheckBox={this.handleCheckBox} />
+        <RecruitTable data={success} handleCheckBox={this.handleCheckBox} final="true" />
 
         <p className="mini-title">Walk Ons</p>
-        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox} /></div>,
-        button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
+        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox}final="true" /></div>,
+        button: <button disabled = {true} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
       }));
   }
 
@@ -209,7 +216,7 @@ class App extends Component {
       }
       this.setState(prevState => ({
         title: 'This Year Recruits',
-        content: <RecruitTable data={recruits} handleCheckBox={this.handleCheckBox}/>,
+        content: <RecruitTable data={recruits} handleCheckBox={this.handleCheckBox} final="false" />,
         button: <button type="button" className="btn btn-default" onClick={this.handleRecruitSubmit}>Submit!</button>
       }));
     }

@@ -93,9 +93,10 @@ export class RecruitTable extends Component{
             name= {player.name}
             type="checkbox"
             onChange={this.props.handleCheckBox}
+            final = {this.props.final}
+            disabled = {!this.props.checkboxActive}
             />
     }
-    console.log(this.props.data.length)
     return (
       <form onSubmit={this.props.handleRecruitSubmit}>
               <ReactTable
