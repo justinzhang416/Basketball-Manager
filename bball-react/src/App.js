@@ -81,7 +81,7 @@ class App extends Component {
     this.seasonData.day++;
 
     this.setState(prevState => ({
-        content: <div><SeasonTable data={this.state.gameData.teams}/> 
+        content: <div><SeasonTable data={this.state.gameData.teams}/>
         <div className="page-title">{"Scores"}</div>
         <ScoreTable data={scores} /></div>,
     }));
@@ -134,8 +134,15 @@ class App extends Component {
     // console.log(temp);
     // 'Rating:' + this.state.gameData.myTeam.rating
 
-    // TODO: HERE WE ADD RECRUITING ALGO!!!
-    let success = this.activeRecruits;
+    let recruitsZ = []
+    var potLen = this.activeRecruits.length;
+    for(let i = 0; i < potLen; i++){
+      var seeder = Math.random() * potLen
+      if(seeder < 2){
+        recruitsZ.push(this.activeRecruits[i])
+      }
+    }
+    let success = recruitsZ;
     this.activeRecruits = []
 
     let walkons =generateRecruits();
@@ -149,10 +156,10 @@ class App extends Component {
         content: <div>
         <p className="mini-title">Current Roster</p>
         <RecruitTable data={this.state.gameData.myTeam.players} handleCheckBox={this.handleCheckBox} />
-        
+
         <p className="mini-title">Successfully Recruited</p>
         <RecruitTable data={success} handleCheckBox={this.handleCheckBox} />
-     
+
         <p className="mini-title">Walk Ons</p>
         <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox} /></div>,
         button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
