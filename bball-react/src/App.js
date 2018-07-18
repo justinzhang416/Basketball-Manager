@@ -34,6 +34,7 @@ class App extends Component {
     this.playGames = this.playGames.bind(this);
     this.startSeason = this.startSeason.bind(this);
     this.handleFinalRoster = this.handleFinalRoster.bind(this);
+    this.handleGoHome = this.handleGoHome.bind(this);
 
     this.state = {
       gameData: generateGameData(),
@@ -88,6 +89,18 @@ class App extends Component {
     if(this.seasonData == this.seasonData){
 
     }
+  }
+
+  handleGoHome(e){
+    let prev = this.prevState;
+    // this.setState(prevState => ({
+    //     title: prev.title,
+    //     content: prev.content,
+    //     button: prev.button
+    // }));
+
+    this.setState(prevState => (prev));
+    
   }
 
   handleCheckBox(e){
@@ -169,10 +182,12 @@ class App extends Component {
     }
 
     else if(e.target.getAttribute("value") == "roster"){
+      this.prevState = this.state;
+      console.log(this.prevState);
       this.setState(prevState => ({
         title: 'Your Roster',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
-        button: ""
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleGoHome}>Go Back</button>
       }));
     }
 
