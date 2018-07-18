@@ -71,6 +71,7 @@ export function fillOutTeams(num){
 
 export function generateRecruits(){
 	var yearKey = {1: 'FR',2: 'SO',3: 'JR',4: 'SR'}
+	let pot = []
 	let recruits = [];
 	// Generates recruits
 	// TODO: Use normal density curve instead of random, so we get more average players. Or use data.
@@ -84,6 +85,7 @@ export function generateRecruits(){
 		let r = new Player(fullName, Math.floor(Math.random() * 35 + 66),Math.floor(Math.random() * 35 + 66),1);
 		recruits.push(r);
 	}
+
 	return recruits;
 }
 
