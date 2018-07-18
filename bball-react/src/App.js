@@ -18,7 +18,7 @@ import 'react-table/react-table.css';
 
 
 
-
+var STATE_NAME = "";
 class Banner extends Component{
   // <img src={bball} alt="" className="bball"/>
   render() {
@@ -86,7 +86,7 @@ class App extends Component {
     this.seasonData.day++;
 
     this.setState(prevState => ({
-        content: <div><SeasonTable data={this.state.gameData.teams}/> 
+        content: <div><SeasonTable data={this.state.gameData.teams}/>
         <div className="page-title">{"Scores"}</div>
         <ScoreTable data={scores} /></div>,
     }));
@@ -111,6 +111,7 @@ class App extends Component {
   }
 
   handleFinalRoster(e){
+
     // e.preventDefault();
     this.state.gameData.myTeam.players =this.activeRecruits;
     // 'Rating:' + this.state.gameData.myTeam.rating
@@ -147,8 +148,9 @@ class App extends Component {
 
   handleNewPage(e){
 
-  
+
     if(e.target.getAttribute("value") == "player"){
+      STATE_NAME = 'player'
       this.setState(prevState => ({
         title: 'Your Roster',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
@@ -164,7 +166,42 @@ class App extends Component {
       }));
     }
 
+    // else if(e.target.getAttribute("value") == "home"){
+    //   if(STATE_NAME == 'recruit'){
+    //     STATE_NAME = 'recruit'
+    //     let recruits =generateRecruits();
+    //     this.recruitMap = {};
+    //     for(let r of recruits){
+    //       this.recruitMap[r.name] = r;
+    //     }
+    //     for(let p of this.state.gameData.myTeam.players){
+    //       this.recruitMap[p.name] = p;
+    //     }
+    //     this.setState(prevState => ({
+    //       title: 'This Year Recruits',
+    //       content: <RecruitTable data={recruits} handleCheckBox={this.handleCheckBox}/>,
+    //       button: <button type="button" className="btn btn-default" onClick={this.handleRecruitSubmit}>Submit!</button>
+    //     }));
+    //   }else if(STATE_NAME == 'player'){
+    //     STATE_NAME = 'player'
+    //     this.setState(prevState => ({
+    //       title: 'Your Roster',
+    //       content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+    //       button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+    //     }));
+    //   }else if(STATE_NAME == 'start'){
+    //     STATE_NAME = 'start'
+    //     this.startSeason();
+    //     this.setState(prevState => ({
+    //       title: 'Current Standings',
+    //       content: <SeasonTable data={this.state.gameData.teams} />,
+    //       button: <button type="button" className="btn btn-default" onClick={this.playGames}>Play Games!</button>
+    //     }));
+    //   }
+    // }
+
     else if(e.target.getAttribute("value") == 'recruit'){
+      STATE_NAME = 'recruit'
       let recruits =generateRecruits();
       this.recruitMap = {};
       for(let r of recruits){
@@ -181,6 +218,7 @@ class App extends Component {
     }
 
     else if(e.target.getAttribute("value") == 'start'){
+      STATE_NAME = 'start'
       this.startSeason();
       this.setState(prevState => ({
         title: 'Current Standings',
@@ -209,7 +247,7 @@ class Sidebar extends Component{
       <div className="sidebar-container">
             <nav className="nav-sidebar">
                 <ul className="nav">
-                    <li><a href="javascript:;">Home</a></li>
+                    <li><a href="javascript:;" value="home" onClick={this.props.handleNewPage}>Home</a></li>
                     <li><a href="javascript:;" value="roster" onClick={this.props.handleNewPage}>Roster</a></li>
                     <li><a href="javascript:;">Standings</a></li>
                     <li><a href="javascript:;">Scouting</a></li>
