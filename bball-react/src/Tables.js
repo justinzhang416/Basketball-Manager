@@ -94,7 +94,6 @@ export class RecruitTable extends Component{
             type="checkbox"
             onChange={this.props.handleCheckBox}
             final = {this.props.final}
-            disabled = {!this.props.checkboxActive}
             />
     }
     return (

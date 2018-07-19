@@ -4,7 +4,7 @@ import './App.css';
 
 // import bball from './bball.png'; // relative path to image
 
-import {Player, Team, generateGameData, generateRecruits, playGame} from './manage.js';
+import {Player, Team, generateGameData, generateRecruits, playGame, improvePlayers} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable} from './Tables.js';
 
 
@@ -83,11 +83,13 @@ class App extends Component {
 
     this.setState(prevState => ({
         content: <div><SeasonTable data={this.state.gameData.teams}/>
-        <div className="page-title">{"Scores"}</div>
-        <ScoreTable data={scores} /></div>,
+        <div className="mini-title">{"Scores"}</div>
+        <ScoreTable data={scores} /></div>
     }));
-    if(this.seasonData == this.seasonData){
-
+    if(this.seasonData.day == this.seasonData.numDays){
+      this.setState(prevState => ({
+        button: <button type="button" className="btn btn-default" value = "end" onClick={this.handleNewPage}>End Season!</button>
+      }));
     }
   }
 
@@ -194,7 +196,6 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
       }));
     }
-
     else if(e.target.getAttribute("value") == "roster"){
       this.prevState = this.state;
       console.log(this.prevState);
@@ -204,7 +205,6 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleGoHome}>Go Back</button>
       }));
     }
-
     else if(e.target.getAttribute("value") == 'recruit'){
       let recruits =generateRecruits();
       this.recruitMap = {};
@@ -220,13 +220,20 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" onClick={this.handleRecruitSubmit}>Submit!</button>
       }));
     }
-
     else if(e.target.getAttribute("value") == 'start'){
       this.startSeason();
       this.setState(prevState => ({
         title: 'Current Standings',
         content: <SeasonTable data={this.state.gameData.teams} />,
         button: <button type="button" className="btn btn-default" onClick={this.playGames}>Play Games!</button>
+      }));
+    }
+    else if(e.target.getAttribute("value") == "end"){
+      improvePlayers(this.state.gameData.myTeam);
+      this.setState(prevState => ({
+        title: 'Season End - Your players made the following improvements',
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Next Season</button>
       }));
     }
   }

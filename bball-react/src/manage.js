@@ -55,6 +55,14 @@ export function generateGameData(){
 	return data;
 }
 
+//TODO: Make this not mutable?
+export function improvePlayers(team){
+	for(let player of team.players){
+		player.offense += Math.floor(Math.random()*5)
+		player.defense += Math.floor(Math.random()*5)
+	} 
+}
+
 export function fillOutTeams(num){
 	var res = [];
 	var i = 0;
@@ -88,6 +96,8 @@ export function generateRecruits(){
 
 	return recruits;
 }
+
+
 
 // Plays game between two teams, return result as string.
 // TODO: Improve shitty ass algorithm
