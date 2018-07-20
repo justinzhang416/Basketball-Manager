@@ -131,3 +131,32 @@ export class RecruitTable extends Component{
       )
   }
 }
+
+export class PlayoffTable extends Component{
+  render(){
+    return (<ReactTable
+          data={this.props.data}
+          columns={[
+            {
+              Header: 'Seed',
+              accessor: 'seed1' // String-based value accessors!
+            },
+            {
+              Header: 'Name',
+              accessor: 'name1' // String-based value accessors!
+            },
+            {
+              Header: 'Seed',
+              accessor: 'seed2' // String-based value accessors!
+            },
+            {
+              Header: 'Name',
+              accessor: 'name2' // String-based value accessors!
+            }
+          ]}
+          pageSize={this.props.data.length}
+          className="-striped -highlight"
+          showPagination= {false}
+        />)
+  }
+}

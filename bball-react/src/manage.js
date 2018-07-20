@@ -37,7 +37,7 @@ export function calcRating(team){
 export function generateGameData(){
 	let data = {};
 	var p1 = fillOutTeams(5);
-	let myTeam = new Team("MYTEAM",p1);
+	let myTeam = new Team("UNC",p1);
 
 	let allTeams = [];
 	p1 = fillOutTeams(8);
@@ -46,6 +46,16 @@ export function generateGameData(){
 	allTeams.push(new Team("NC State", p1));
 	p1 = fillOutTeams(8);
 	allTeams.push(new Team("Wake Forest", p1));
+
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Louisville", p1));
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Syracuse", p1));
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Miami", p1));
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Virginia", p1));
+
 
 	allTeams.push(myTeam);
 

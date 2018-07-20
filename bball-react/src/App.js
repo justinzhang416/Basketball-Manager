@@ -5,7 +5,7 @@ import './App.css';
 // import bball from './bball.png'; // relative path to image
 
 import {Player, Team, generateGameData, generateRecruits, playGame, improvePlayers} from './manage.js';
-import {PlayerTable, RecruitTable, SeasonTable, ScoreTable} from './Tables.js';
+import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
 import ReactTable from "react-table";
@@ -35,6 +35,8 @@ class App extends Component {
     this.startSeason = this.startSeason.bind(this);
     this.handleFinalRoster = this.handleFinalRoster.bind(this);
     this.handleGoHome = this.handleGoHome.bind(this);
+    this.playoffMatch = this.playoffMatch.bind(this);
+    this.playoffScore = this.playoffScore.bind(this);
 
     this.state = {
       gameData: generateGameData(),
@@ -54,6 +56,82 @@ class App extends Component {
 
     this.recruitMap = {};
     this.activeRecruits = [];
+  }
+
+  initPlayoffs(){
+    
+    
+    let i = 0; let j = this.playoffTeams.length - 1;
+    let tableData = []
+    while(i < j){
+      tableData.push({seed1: i+1, name1: this.playoffTeams[i].name,
+        seed2: j+1, name2: this.playoffTeams[j].name})
+    }
+
+    this.setState(prevState => ({
+        title: 'Playoff Match-ups',
+        content: <div><PlayoffTable data={tableData}/></div>,
+        button: <button type="button" className="btn btn-default" onClick={this.playPlayoffs}>Start Playoffs!</button>
+    }));
+  }
+
+  playoffMatch(){
+
+    if(this.playoffTeams.length == 1){
+          this.playoffTeams[0].champs += 1;
+          this.setState(prevState => ({
+          title: 'The winner is ' + this.playoffTeams[0].name + '!',
+          content: '',
+          button: <button type="button" className="btn btn-default" value="end" onClick={this.handleNewPage}>Next Season!</button>
+          }));
+          return;
+    }
+
+    let i = 0; let j = this.playoffTeams.length - 1;
+    let tableData = [];
+    while(i < j){
+      tableData.push({seed1: i+1, name1: this.playoffTeams[i].name,
+        seed2: j+1, name2: this.playoffTeams[j].name})
+      i += 1;
+      j -= 1;
+    }
+    this.setState(prevState => ({
+        title: 'Playoff Match-Ups',
+        content: <div><PlayoffTable data={tableData}/></div>,
+        button: <button type="button" className="btn btn-default" onClick={this.playoffScore}>Play Games!</button>
+    }));
+  }
+
+  playoffScore(){
+      
+      let i = 0; let j = this.playoffTeams.length - 1;
+      let newPlayoffTeams = [];
+      let scores = []
+      while(i < j){
+          let t1 = this.playoffTeams[i];
+          let t2 = this.playoffTeams[j];
+
+          var firstScore = Math.floor(Math.random() * t1.rating + .2* t1.rating);
+          var secondScore = Math.floor(Math.random() * t2.rating + .2*t2.rating);
+          let result = t1.name + ": " + firstScore + ", " + t2.name + ": " + secondScore;
+          scores.push({name1: t1.name, score1: firstScore,name2: t2.name, score2: secondScore})
+          if(firstScore > secondScore){
+              newPlayoffTeams.push(t1);
+          }
+          else{
+              newPlayoffTeams.push(t2);
+          }
+          i += 1;
+          j -= 1;
+      }
+      this.playoffTeams = newPlayoffTeams;
+
+      this.setState(prevState => ({
+        title: `This Round's Results`,
+        content: <div><ScoreTable data={scores}/></div>,
+        button: <button type="button" className="btn btn-default" onClick={this.playoffMatch}>Next Round</button>
+    }));
+
   }
 
   startSeason(){
@@ -87,8 +165,11 @@ class App extends Component {
         <ScoreTable data={scores} /></div>
     }));
     if(this.seasonData.day == this.seasonData.numDays){
+      this.playoffTeams = this.state.gameData.teams.slice();
+      const compare = (a, b) => a.l < b.l ? -1 : (a.l > b.l ? 1 : 0);
+      this.playoffTeams.sort(compare);
       this.setState(prevState => ({
-        button: <button type="button" className="btn btn-default" value = "end" onClick={this.handleNewPage}>End Season!</button>
+        button: <button type="button" className="btn btn-default" value = "end" onClick={this.playoffMatch}>Start Playoffs!</button>
       }));
     }
   }
