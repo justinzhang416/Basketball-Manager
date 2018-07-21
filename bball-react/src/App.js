@@ -225,6 +225,7 @@ class App extends Component {
   }
 
   handleFinalRoster(e){
+
     // e.preventDefault();
     this.state.gameData.myTeam.players =this.activeRecruits;
     // 'Rating:' + this.state.gameData.myTeam.rating
@@ -233,6 +234,7 @@ class App extends Component {
         content: <PlayerTable data={this.state.gameData.myTeam.players}/>,
         button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
     }));
+
   }
 
   handleRecruitSubmit(e){
@@ -267,8 +269,18 @@ class App extends Component {
         <RecruitTable data={success} handleCheckBox={this.handleCheckBox} final="true" />
 
         <p className="mini-title">Walk Ons</p>
+<<<<<<< HEAD
+<<<<<<< HEAD
+        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox} /></div>,
+        button: <button type="button" name="CUTS" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
+=======
         <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox}final="true" /></div>,
         button: <button disabled = {true} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
+>>>>>>> 8a27623181a77686ef5875e45714740bd48949df
+=======
+        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox}final="true" /></div>,
+        button: <button disabled = {true} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
+>>>>>>> 8a27623181a77686ef5875e45714740bd48949df
       }));
   }
 
