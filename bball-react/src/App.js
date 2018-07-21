@@ -4,8 +4,8 @@ import './App.css';
 
 // import bball from './bball.png'; // relative path to image
 
-import {Player, Team, generateGameData, generateRecruits, playGame} from './manage.js';
-import {PlayerTable, RecruitTable, SeasonTable, ScoreTable} from './Tables.js';
+import {Player, Team, generateGameData, generateRecruits, playGame, improvePlayers} from './manage.js';
+import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
 import ReactTable from "react-table";
@@ -34,12 +34,15 @@ class App extends Component {
     this.playGames = this.playGames.bind(this);
     this.startSeason = this.startSeason.bind(this);
     this.handleFinalRoster = this.handleFinalRoster.bind(this);
+    this.handleGoHome = this.handleGoHome.bind(this);
+    this.playoffMatch = this.playoffMatch.bind(this);
+    this.playoffScore = this.playoffScore.bind(this);
 
     this.state = {
       gameData: generateGameData(),
       title: 'Welcome to Basketball Manager',
       content: 'Are you up for the challenge?',
-      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNewPage}>Begin</button>
+      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNewPage}>Begin</button>,
     }
 
     this.seasonData = {
@@ -53,6 +56,81 @@ class App extends Component {
 
     this.recruitMap = {};
     this.activeRecruits = [];
+  }
+
+  initPlayoffs(){
+    
+    let i = 0; let j = this.playoffTeams.length - 1;
+    let tableData = []
+    while(i < j){
+      tableData.push({seed1: i+1, name1: this.playoffTeams[i].name,
+        seed2: j+1, name2: this.playoffTeams[j].name})
+    }
+
+    this.setState(prevState => ({
+        title: 'Playoff Match-ups',
+        content: <div><PlayoffTable data={tableData}/></div>,
+        button: <button type="button" className="btn btn-default" onClick={this.playPlayoffs}>Start Playoffs!</button>
+    }));
+  }
+
+  playoffMatch(){
+
+    if(this.playoffTeams.length == 1){
+          this.playoffTeams[0].team.champs += 1;
+          this.setState(prevState => ({
+          title: 'The winner is ' + this.playoffTeams[0].team.name + '!',
+          content: '',
+          button: <button type="button" className="btn btn-default" value="end" onClick={this.handleNewPage}>Next Season!</button>
+          }));
+          return;
+    }
+
+    let i = 0; let j = this.playoffTeams.length - 1;
+    let tableData = [];
+    while(i < j){
+      tableData.push({seed1: this.playoffTeams[i].seed, name1: this.playoffTeams[i].team.name,
+        seed2: this.playoffTeams[j].seed, name2: this.playoffTeams[j].team.name})
+      i += 1;
+      j -= 1;
+    }
+    this.setState(prevState => ({
+        title: 'Playoff Match-Ups',
+        content: <div><PlayoffTable data={tableData}/></div>,
+        button: <button type="button" className="btn btn-default" onClick={this.playoffScore}>Play Games!</button>
+    }));
+  }
+
+  playoffScore(){
+      
+      let i = 0; let j = this.playoffTeams.length - 1;
+      let newPlayoffTeams = [];
+      let scores = []
+      while(i < j){
+          let t1 = this.playoffTeams[i].team;
+          let t2 = this.playoffTeams[j].team;
+
+          var firstScore = Math.floor(Math.random() * t1.rating + .2* t1.rating);
+          var secondScore = Math.floor(Math.random() * t2.rating + .2*t2.rating);
+          let result = t1.name + ": " + firstScore + ", " + t2.name + ": " + secondScore;
+          scores.push({name1: t1.name, score1: firstScore,name2: t2.name, score2: secondScore})
+          if(firstScore > secondScore){
+              newPlayoffTeams.push(this.playoffTeams[i]);
+          }
+          else{
+              newPlayoffTeams.push(this.playoffTeams[j]);
+          }
+          i += 1;
+          j -= 1;
+      }
+      this.playoffTeams = newPlayoffTeams;
+
+      this.setState(prevState => ({
+        title: `This Round's Results`,
+        content: <div><ScoreTable data={scores}/></div>,
+        button: <button type="button" className="btn btn-default" onClick={this.playoffMatch}>Next Round</button>
+    }));
+
   }
 
   startSeason(){
@@ -82,12 +160,33 @@ class App extends Component {
 
     this.setState(prevState => ({
         content: <div><SeasonTable data={this.state.gameData.teams}/>
-        <div className="page-title">{"Scores"}</div>
-        <ScoreTable data={scores} /></div>,
+        <div className="mini-title">{"Scores"}</div>
+        <ScoreTable data={scores} /></div>
     }));
-    if(this.seasonData == this.seasonData){
-
+    if(this.seasonData.day == this.seasonData.numDays){
+      // this.playoffTeams = this.state.gameData.teams.slice();
+      const compare = (a, b) => a.l < b.l ? -1 : (a.l > b.l ? 1 : 0);
+      this.state.gameData.teams.sort(compare);
+      this.playoffTeams = [];
+      for(let i =0; i < this.state.gameData.teams.length;i++ ){
+        this.playoffTeams.push({team: this.state.gameData.teams[i], seed: i + 1});
+      }
+      this.setState(prevState => ({
+        button: <button type="button" className="btn btn-default" value = "end" onClick={this.playoffMatch}>Start Playoffs!</button>
+      }));
     }
+  }
+
+  handleGoHome(e){
+    let prev = this.prevState;
+    // this.setState(prevState => ({
+    //     title: prev.title,
+    //     content: prev.content,
+    //     button: prev.button
+    // }));
+
+    this.setState(prevState => (prev));
+    
   }
 
   handleCheckBox(e){
@@ -98,14 +197,35 @@ class App extends Component {
       this.activeRecruits.push(this.recruitMap[target.name]);
     }
     else{
-      var index = this.activeRecruits.indexOf(target.name);
+      var index = this.activeRecruits.indexOf(this.recruitMap[target.name]);
       if(index > -1){
         this.activeRecruits.splice(index, 1);
       }
     }
+
+    
+    if(e.target.getAttribute("final") == "true"){
+      this.setState(prevState => ({
+          checkboxActive: false
+        }));
+      console.log("yo")
+      this.setState(prevState => ({
+         button: <button disabled = {!(this.activeRecruits.length == 8)} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>,
+         checkboxActive: true
+      }));
+
+      if(this.activeRecruits.length == 8){
+        this.setState(prevState => ({
+          checkboxActive: false
+        }));
+      }
+    }
+
+    console.log(this.state.buttonActive)
   }
 
   handleFinalRoster(e){
+
     // e.preventDefault();
     this.state.gameData.myTeam.players =this.activeRecruits;
     // 'Rating:' + this.state.gameData.myTeam.rating
@@ -114,25 +234,13 @@ class App extends Component {
         content: <PlayerTable data={this.state.gameData.myTeam.players}/>,
         button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
     }));
+
   }
 
   handleRecruitSubmit(e){
     e.preventDefault();
     console.log(e.target);
     console.log(this.activeRecruits);
-
-    // let temp = this.state.gameData.myTeam.players.slice();
-    // for(let recruit of this.recruits){
-    //   if(this.activeRecruits.includes(recruit.name) ){
-    //     temp.push(recruit);
-    //   }
-    // }
-
-    // for(let player of this.activeRecruits){
-    //   temp.push(player);
-    // }
-    // console.log(temp);
-    // 'Rating:' + this.state.gameData.myTeam.rating
 
     let recruitsZ = []
     var potLen = this.activeRecruits.length;
@@ -155,14 +263,19 @@ class App extends Component {
         title: 'Choose Final Roster (8 Players)',
         content: <div>
         <p className="mini-title">Current Roster</p>
-        <RecruitTable data={this.state.gameData.myTeam.players} handleCheckBox={this.handleCheckBox} />
+        <RecruitTable data={this.state.gameData.myTeam.players} handleCheckBox={this.handleCheckBox} final="true" />
 
         <p className="mini-title">Successfully Recruited</p>
-        <RecruitTable data={success} handleCheckBox={this.handleCheckBox} />
+        <RecruitTable data={success} handleCheckBox={this.handleCheckBox} final="true" />
 
         <p className="mini-title">Walk Ons</p>
+<<<<<<< HEAD
         <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox} /></div>,
-        button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
+        button: <button type="button" name="CUTS" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
+=======
+        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox}final="true" /></div>,
+        button: <button disabled = {true} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
+>>>>>>> 8a27623181a77686ef5875e45714740bd48949df
       }));
   }
 
@@ -174,15 +287,15 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
       }));
     }
-
     else if(e.target.getAttribute("value") == "roster"){
+      this.prevState = this.state;
+      console.log(this.prevState);
       this.setState(prevState => ({
         title: 'Your Roster',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
-        button: ""
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleGoHome}>Go Back</button>
       }));
     }
-
     else if(e.target.getAttribute("value") == 'recruit'){
       let recruits =generateRecruits();
       this.recruitMap = {};
@@ -194,17 +307,24 @@ class App extends Component {
       }
       this.setState(prevState => ({
         title: 'This Year Recruits',
-        content: <RecruitTable data={recruits} handleCheckBox={this.handleCheckBox}/>,
+        content: <RecruitTable data={recruits} handleCheckBox={this.handleCheckBox} final="false" />,
         button: <button type="button" className="btn btn-default" onClick={this.handleRecruitSubmit}>Submit!</button>
       }));
     }
-
     else if(e.target.getAttribute("value") == 'start'){
       this.startSeason();
       this.setState(prevState => ({
         title: 'Current Standings',
         content: <SeasonTable data={this.state.gameData.teams} />,
         button: <button type="button" className="btn btn-default" onClick={this.playGames}>Play Games!</button>
+      }));
+    }
+    else if(e.target.getAttribute("value") == "end"){
+      improvePlayers(this.state.gameData.myTeam);
+      this.setState(prevState => ({
+        title: 'Season End - Your players made the following improvements',
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Next Season</button>
       }));
     }
   }

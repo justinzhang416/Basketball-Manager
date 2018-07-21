@@ -93,9 +93,9 @@ export class RecruitTable extends Component{
             name= {player.name}
             type="checkbox"
             onChange={this.props.handleCheckBox}
+            final = {this.props.final}
             />
     }
-    console.log(this.props.data.length)
     return (
       <form onSubmit={this.props.handleRecruitSubmit}>
               <ReactTable
@@ -129,5 +129,34 @@ export class RecruitTable extends Component{
 
       </form>
       )
+  }
+}
+
+export class PlayoffTable extends Component{
+  render(){
+    return (<ReactTable
+          data={this.props.data}
+          columns={[
+            {
+              Header: 'Seed',
+              accessor: 'seed1' // String-based value accessors!
+            },
+            {
+              Header: 'Name',
+              accessor: 'name1' // String-based value accessors!
+            },
+            {
+              Header: 'Seed',
+              accessor: 'seed2' // String-based value accessors!
+            },
+            {
+              Header: 'Name',
+              accessor: 'name2' // String-based value accessors!
+            }
+          ]}
+          pageSize={this.props.data.length}
+          className="-striped -highlight"
+          showPagination= {false}
+        />)
   }
 }

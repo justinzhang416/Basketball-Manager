@@ -37,7 +37,7 @@ export function calcRating(team){
 export function generateGameData(){
 	let data = {};
 	var p1 = fillOutTeams(5);
-	let myTeam = new Team("MYTEAM",p1);
+	let myTeam = new Team("UNC",p1);
 
 	let allTeams = [];
 	p1 = fillOutTeams(8);
@@ -47,12 +47,30 @@ export function generateGameData(){
 	p1 = fillOutTeams(8);
 	allTeams.push(new Team("Wake Forest", p1));
 
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Louisville", p1));
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Syracuse", p1));
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Miami", p1));
+	p1 = fillOutTeams(8);
+	allTeams.push(new Team("Virginia", p1));
+
+
 	allTeams.push(myTeam);
 
 	data.myTeam = myTeam;
 	data.teams = allTeams;
 
 	return data;
+}
+
+//TODO: Make this not mutable?
+export function improvePlayers(team){
+	for(let player of team.players){
+		player.offense += Math.floor(Math.random()*5)
+		player.defense += Math.floor(Math.random()*5)
+	} 
 }
 
 export function fillOutTeams(num){
@@ -88,6 +106,8 @@ export function generateRecruits(){
 
 	return recruits;
 }
+
+
 
 // Plays game between two teams, return result as string.
 // TODO: Improve shitty ass algorithm
