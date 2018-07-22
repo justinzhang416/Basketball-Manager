@@ -327,8 +327,7 @@ class App extends Component {
   render() {
     return (
       <div className="wrapper">
-         <Banner />
-         <div className="container">
+         <div className="game-container">
             <Sidebar gameData={this.state.gameData} handleNewPage = {this.handleNewPage}/>
             <Content gameData={this.state.gameData} title = {this.state.title} content = {this.state.content}
             button = {this.state.button}/>
@@ -342,6 +341,7 @@ class Sidebar extends Component{
   render(){
     return(
       <div className="sidebar-container">
+            <Banner />
             <nav className="nav-sidebar">
                 <ul className="nav">
                     <li><a href="javascript:;">Home</a></li>
