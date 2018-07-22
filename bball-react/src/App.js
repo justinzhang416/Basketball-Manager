@@ -59,7 +59,7 @@ class App extends Component {
   }
 
   initPlayoffs(){
-    
+
     let i = 0; let j = this.playoffTeams.length - 1;
     let tableData = []
     while(i < j){
@@ -102,7 +102,7 @@ class App extends Component {
   }
 
   playoffScore(){
-      
+
       let i = 0; let j = this.playoffTeams.length - 1;
       let newPlayoffTeams = [];
       let scores = []
@@ -186,7 +186,7 @@ class App extends Component {
     // }));
 
     this.setState(prevState => (prev));
-    
+
   }
 
   handleCheckBox(e){
@@ -203,7 +203,7 @@ class App extends Component {
       }
     }
 
-    
+
     if(e.target.getAttribute("final") == "true"){
       this.setState(prevState => ({
           checkboxActive: false
@@ -269,18 +269,9 @@ class App extends Component {
         <RecruitTable data={success} handleCheckBox={this.handleCheckBox} final="true" />
 
         <p className="mini-title">Walk Ons</p>
-<<<<<<< HEAD
-<<<<<<< HEAD
         <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox} /></div>,
         button: <button type="button" name="CUTS" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
-=======
-        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox}final="true" /></div>,
-        button: <button disabled = {true} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
->>>>>>> 8a27623181a77686ef5875e45714740bd48949df
-=======
-        <RecruitTable data={walkons} handleCheckBox={this.handleCheckBox}final="true" /></div>,
-        button: <button disabled = {true} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>
->>>>>>> 8a27623181a77686ef5875e45714740bd48949df
+
       }));
   }
 
