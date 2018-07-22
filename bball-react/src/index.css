@@ -2,7 +2,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Karla', sans-serif;
 }
 
 .wrapper{
@@ -67,24 +67,30 @@ body {
 .page-title{
     color: #A9A9A9;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 3em;
     margin: 5vh 2vw;
 }
 
 .page-content{
     color: #A9A9A9;
     text-align: center;
+    font-size: 1.5em;
     /*margin: 2vh 2vw;*/
+    padding: 2vh 0vw;
 }
 
 .page-continue{
     color: #A9A9A9;
     text-align: center;
-    
+    font-size: 1.5em;
     /*width: 25%;
     margin-left: auto;
     margin-right: auto;*/
     padding: 2vh 0vw;
+}
+
+.btn-default{
+    font-size: 1em;
 }
 
 .mini-title{
