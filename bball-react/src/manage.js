@@ -1,12 +1,16 @@
 import {firstNames,lastNames} from './names.js'
 // Attributes: jump shot, driving, passing, defense, rebounding, work ethic
 export class Player{
-	constructor(name, offense, defense, year){
+	constructor(name, shooting, playmaking, defense, rebounding, ethic, year){
 		this.name = name;
-		this.offense = offense;
+		this.shooting = shooting;
+		this.playmaking = playmaking;
 		this.defense = defense;
+		this.rebounding = rebounding;
+		this.ethic = ethic;
 	  	this.year = year;
 	  	this.key = name;
+	  	this.improvements = {shooting: "", rebounding:"",playmaking: "", defense:""}
 	}
 }
 
@@ -28,7 +32,7 @@ export function calcRating(team){
 	for(i = 0; i < arrayLength; i++){
 		var s = team[i]
 		tot += 1
-		summed = (s.offense + s.defense) / 2
+		summed += (s.shooting + s.playmaking + s.defense + s.rebounding) 
 	}
 	return (summed/tot)
 }
@@ -67,10 +71,21 @@ export function generateGameData(){
 
 //TODO: Make this not mutable?
 export function improvePlayers(team){
+	let choices = ["shooting","playmaking","defense","rebounding"];
 	for(let player of team.players){
-		player.offense += Math.floor(Math.random()*5)
-		player.defense += Math.floor(Math.random()*5)
+		player.improvements = {shooting: "", rebounding:"",playmaking: "", defense:""};
+		for(let i = 1; i <= player.ethic; i++){
+			if(Math.random() < .2){
+				let choice = choices[Math.floor(Math.random() * choices.length)];
+				player[choice] += 1;
+				player.improvements[choice]="*";
+				// player.improvements.push(choice);
+			}
+		}
+		// player.offense += Math.floor(Math.random()*5)
+		// player.defense += Math.floor(Math.random()*5)
 	} 
+	console.log(team);
 }
 
 export function fillOutTeams(num){
@@ -82,7 +97,7 @@ export function fillOutTeams(num){
 		namer = Math.floor(Math.random() * 3300 + 1);
 		var lname = lastNames[namer];
 		var fullName = fname + ' ' + lname;
-		res.push(new Player(fullName, Math.floor(Math.random() * 40 + 61),Math.floor(Math.random() * 40 + 61),1));
+		res.push(new Player(fullName,Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),1));
 	}
 	return res;
 }
@@ -100,7 +115,7 @@ export function generateRecruits(){
 		namer = Math.floor(Math.random() * 3300 + 1)
 		var lname = lastNames[namer]
 		var fullName = fname + ' ' + lname
-		let r = new Player(fullName, Math.floor(Math.random() * 35 + 66),Math.floor(Math.random() * 35 + 66),1);
+		let r = new Player(fullName,Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),1);
 		recruits.push(r);
 	}
 

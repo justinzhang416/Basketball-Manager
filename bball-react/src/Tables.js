@@ -11,16 +11,26 @@ export class PlayerTable extends Component{
               accessor: 'name' // String-based value accessors!
             },
             {
-              Header: 'Offense',
-              accessor: 'offense' // String-based value accessors!
+              Header: 'Shooting',
+              accessor: 'shooting' // String-based value accessors!
+            },
+            {
+              Header: 'Playmaking',
+              accessor: 'playmaking' // String-based value accessors!
             },
             {
               Header: 'Defense',
               accessor: 'defense' // String-based value accessors!
             },
             {
+              id: 'reb',
+              Header: 'Rebounding',
+              accessor: d => d.rebounding + (this.props.improve? d.improvements['rebounding'] : "")
+            },
+            {
+              id: 'year',
               Header: 'Year',
-              accessor: 'year' // String-based value accessors!
+              accessor: d => Math.random() > .5? 0 : 1
             }
           ]}
           defaultPageSize={this.props.data.length}
@@ -106,12 +116,20 @@ export class RecruitTable extends Component{
                     accessor: 'name' // String-based value accessors!
                   },
                   {
-                    Header: 'Offense',
-                    accessor: 'offense' // String-based value accessors!
+                    Header: 'Shooting',
+                    accessor: 'shooting' // String-based value accessors!
+                  },
+                  {
+                    Header: 'Playmaking',
+                    accessor: 'playmaking' // String-based value accessors!
                   },
                   {
                     Header: 'Defense',
                     accessor: 'defense' // String-based value accessors!
+                  },
+                  {
+                    Header: 'Rebounding',
+                    accessor: 'rebounding' // String-based value accessors!
                   },
                   {
                     Header: 'Year',

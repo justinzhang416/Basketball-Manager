@@ -221,7 +221,7 @@ class App extends Component {
       }
     }
 
-    console.log(this.state.buttonActive)
+
   }
 
   handleFinalRoster(e){
@@ -231,7 +231,7 @@ class App extends Component {
     // 'Rating:' + this.state.gameData.myTeam.rating
     this.setState(prevState => ({
         title: 'Final Roster - ' + 'Rating: ' + this.state.gameData.myTeam.rating,
-        content: <PlayerTable data={this.state.gameData.myTeam.players}/>,
+        content: <PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/>,
         button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
     }));
 
@@ -281,7 +281,7 @@ class App extends Component {
     if(e.target.getAttribute("value") == "player"){
       this.setState(prevState => ({
         title: 'Your Roster',
-        content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
       }));
     }
@@ -290,7 +290,7 @@ class App extends Component {
       console.log(this.prevState);
       this.setState(prevState => ({
         title: 'Your Roster',
-        content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleGoHome}>Go Back</button>
       }));
     }
@@ -321,7 +321,7 @@ class App extends Component {
       improvePlayers(this.state.gameData.myTeam);
       this.setState(prevState => ({
         title: 'Season End - Your players made the following improvements',
-        content: <div><PlayerTable data={this.state.gameData.myTeam.players}/></div>,
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={true}/></div>,
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Next Season</button>
       }));
     }
@@ -367,7 +367,7 @@ class Content extends Component{
   render(){
     return(
       <div className ="content">
-        <div className="page-title">{this.props.title}</div>
+        <div className="jumbotron" ><div className="page-title">{this.props.title}</div></div>
         <div className="page-content">{this.props.content}</div>
         <div className="page-continue">{this.props.button}</div>
       </div>
