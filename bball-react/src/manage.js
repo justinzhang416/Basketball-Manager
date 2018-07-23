@@ -10,6 +10,7 @@ export class Player{
 		this.ethic = ethic;
 	  	this.year = year;
 	  	this.key = name;
+	  	this.avg = (shooting + playmaking + defense + rebounding + ethic) / 5
 	  	this.improvements = {shooting: "", rebounding:"",playmaking: "", defense:""}
 	}
 }
@@ -82,6 +83,8 @@ export function improvePlayers(team){
 				// player.improvements.push(choice);
 			}
 		}
+		player.avg =(player.shooting + player.playmaking + player.defense + 
+			player.rebounding + player.ethic) / 5
 		// player.offense += Math.floor(Math.random()*5)
 		// player.defense += Math.floor(Math.random()*5)
 	} 
@@ -97,7 +100,8 @@ export function fillOutTeams(num){
 		namer = Math.floor(Math.random() * 3300 + 1);
 		var lname = lastNames[namer];
 		var fullName = fname + ' ' + lname;
-		res.push(new Player(fullName,Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),1));
+		res.push(new Player(fullName,Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),
+			Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),1));
 	}
 	return res;
 }
@@ -115,7 +119,8 @@ export function generateRecruits(){
 		namer = Math.floor(Math.random() * 3300 + 1)
 		var lname = lastNames[namer]
 		var fullName = fname + ' ' + lname
-		let r = new Player(fullName,Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),Math.floor(Math.random() * 10),1);
+		let r = new Player(fullName,Math.floor(Math.random() * 10 + 1),Math.floor(Math.random() * 10+ 1),
+			Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),1);
 		recruits.push(r);
 	}
 

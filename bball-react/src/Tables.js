@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import ReactTable from "react-table";
 
 export class PlayerTable extends Component{
+  constructor(props){
+    super(props);
+    this.yearKey = {1: 'FR',2: 'SO',3: 'JR',4: 'SR'};
+  }
   render(){
     return (<ReactTable
           data={this.props.data}
@@ -11,16 +15,19 @@ export class PlayerTable extends Component{
               accessor: 'name' // String-based value accessors!
             },
             {
+              id: 'shoot',
               Header: 'Shooting',
-              accessor: 'shooting' // String-based value accessors!
+              accessor: d => d.shooting + (this.props.improve? d.improvements['shooting'] : "")
             },
             {
+              id: 'play',
               Header: 'Playmaking',
-              accessor: 'playmaking' // String-based value accessors!
+              accessor: d => d.playmaking + (this.props.improve? d.improvements['playmaking'] : "")
             },
             {
+              id: 'def',
               Header: 'Defense',
-              accessor: 'defense' // String-based value accessors!
+              accessor: d => d.defense + (this.props.improve? d.improvements['defense'] : "")
             },
             {
               id: 'reb',
@@ -28,9 +35,17 @@ export class PlayerTable extends Component{
               accessor: d => d.rebounding + (this.props.improve? d.improvements['rebounding'] : "")
             },
             {
+              Header: 'Ethic',
+              accessor: 'ethic'
+            },
+            {
+              Header: 'AVG',
+              accessor: 'avg'
+            },
+            {
               id: 'year',
               Header: 'Year',
-              accessor: d => Math.random() > .5? 0 : 1
+              accessor: d => this.yearKey[d.year]
             }
           ]}
           defaultPageSize={this.props.data.length}
@@ -95,6 +110,11 @@ export class SeasonTable extends Component{
 
 
 export class RecruitTable extends Component{
+  constructor(props){
+    super(props);
+    this.yearKey = {1: 'FR',2: 'SO',3: 'JR',4: 'SR'};
+  }
+
   render(){
     var data = JSON.parse(JSON.stringify(this.props.data));
     for(let player of data){
@@ -132,8 +152,12 @@ export class RecruitTable extends Component{
                     accessor: 'rebounding' // String-based value accessors!
                   },
                   {
-                    Header: 'Year',
-                    accessor: 'year' // String-based value accessors!
+                    Header: 'Ethic',
+                    accessor: 'ethic'
+                  },
+                  {
+                    Header: 'AVG',
+                    accessor: 'avg'
                   },
                   {
                     Header: 'Recruit?',
