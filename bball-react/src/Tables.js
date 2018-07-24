@@ -118,13 +118,16 @@ export class RecruitTable extends Component{
   render(){
     var data = JSON.parse(JSON.stringify(this.props.data));
     for(let player of data){
-      player.checkbox = <input
+      player.checkbox =
+      <label class="container"><input
             key = {player.name}
             name= {player.name}
             type="checkbox"
             onChange={this.props.handleCheckBox}
             final = {this.props.final}
             />
+            <span class="checkmark"></span>
+            </label>
     }
     return (
       <form onSubmit={this.props.handleRecruitSubmit}>

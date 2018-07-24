@@ -4,7 +4,7 @@ import './App.css';
 
 // import bball from './bball.png'; // relative path to image
 
-import {Player, Team, generateGameData, generateRecruits, playGame, improvePlayers} from './manage.js';
+import {Player, Team, generateGameData, generateRecruits, playGame, improvePlayers, calcRating, generateWalkons} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -25,6 +25,8 @@ class Banner extends Component{
   }
 }
 
+
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -39,10 +41,12 @@ class App extends Component {
     this.playoffScore = this.playoffScore.bind(this);
 
     this.state = {
+      username: '',
+      password: '',
       gameData: generateGameData(),
-      title: 'Welcome to Basketball Manager',
-      content: 'Are you up for the challenge?',
-      button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNewPage}>Begin</button>,
+      title: 'Welcome to Basketball Madnager',
+      content: <div><form>Username:<br/><input type="text" name="firstname"/><br/>Password:<br/><input type="password" name="lastname"/><br/><br/ ><input type="submit" value="Login"  onClick={this.handleNewPage}/></form></div>,
+      //button: <button type="button" className="btn btn-default" value = "player" onClick={this.handleNewPage}>Begin</button>,
     }
 
     this.seasonData = {
@@ -109,9 +113,17 @@ class App extends Component {
       while(i < j){
           let t1 = this.playoffTeams[i].team;
           let t2 = this.playoffTeams[j].team;
-
-          var firstScore = Math.floor(Math.random() * t1.rating + .2* t1.rating);
-          var secondScore = Math.floor(Math.random() * t2.rating + .2*t2.rating);
+          var sumRating = t1.rating + t2.rating
+          var seedring = Math.floor(Math.random() * sumRating + 1);
+          if(seedring > t1.rating){
+            var firstScore = Math.floor(Math.random() * 40 + 40);
+            var secondScore = firstScore - Math.floor(Math.random() * 20 + 1);
+          }else{
+            var secondScore = Math.floor(Math.random() * 40 + 40);
+            var firstScore = secondScore - Math.floor(Math.random() * 20 + 1);
+          }
+          //var firstScore = Math.floor(Math.random() * t1.rating + .2* t1.rating);
+          //var secondScore = Math.floor(Math.random() * t2.rating + .2*t2.rating);
           let result = t1.name + ": " + firstScore + ", " + t2.name + ": " + secondScore;
           scores.push({name1: t1.name, score1: firstScore,name2: t2.name, score2: secondScore})
           if(firstScore > secondScore){
@@ -230,7 +242,7 @@ class App extends Component {
     this.state.gameData.myTeam.players =this.activeRecruits;
     // 'Rating:' + this.state.gameData.myTeam.rating
     this.setState(prevState => ({
-        title: 'Final Roster - ' + 'Rating: ' + this.state.gameData.myTeam.rating,
+        title: 'Final Roster',
         content: <PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/>,
         button: <button type="button" className="btn btn-default" value = "start" onClick={this.handleNewPage}>Start Season!</button>
     }));
@@ -253,7 +265,7 @@ class App extends Component {
     let success = recruitsZ;
     this.activeRecruits = []
 
-    let walkons =generateRecruits();
+    let walkons = generateWalkons();
     for(let r of walkons){
         this.recruitMap[r.name] = r;
     }
@@ -278,7 +290,7 @@ class App extends Component {
   }
 
   handleNewPage(e){
-    if(e.target.getAttribute("value") == "player"){
+    if(e.target.getAttribute("value") == "player" || e.target.getAttribute("value") == "Login"){
       this.setState(prevState => ({
         title: 'Your Roster',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,

@@ -33,7 +33,7 @@ export function calcRating(team){
 	for(i = 0; i < arrayLength; i++){
 		var s = team[i]
 		tot += 1
-		summed += (s.shooting + s.playmaking + s.defense + s.rebounding) 
+		summed += (s.shooting + s.playmaking + s.defense + s.rebounding + s.ethic)
 	}
 	return (summed/tot)
 }
@@ -83,11 +83,11 @@ export function improvePlayers(team){
 				// player.improvements.push(choice);
 			}
 		}
-		player.avg =(player.shooting + player.playmaking + player.defense + 
+		player.avg =(player.shooting + player.playmaking + player.defense +
 			player.rebounding + player.ethic) / 5
 		// player.offense += Math.floor(Math.random()*5)
 		// player.defense += Math.floor(Math.random()*5)
-	} 
+	}
 	console.log(team);
 }
 
@@ -101,7 +101,7 @@ export function fillOutTeams(num){
 		var lname = lastNames[namer];
 		var fullName = fname + ' ' + lname;
 		res.push(new Player(fullName,Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),
-			Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),1));
+			Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 4 + 1)));
 	}
 	return res;
 }
@@ -127,6 +127,27 @@ export function generateRecruits(){
 	return recruits;
 }
 
+export function generateWalkons(){
+	var yearKey = {1: 'FR',2: 'SO',3: 'JR',4: 'SR'}
+	let pot = []
+	let recruits = [];
+	// Generates recruits
+	// TODO: Use normal density curve instead of random, so we get more average players. Or use data.
+	// TODO: Pull names from simple database.
+	for(let i = 0; i <= 7; i++){
+		var namer = Math.floor(Math.random() * 3600 + 1)
+		var fname = firstNames[namer]
+		namer = Math.floor(Math.random() * 3300 + 1)
+		var lname = lastNames[namer]
+		var fullName = fname + ' ' + lname
+		let r = new Player(fullName,Math.floor(Math.random() * 10 + 1),Math.floor(Math.random() * 10+ 1),
+			Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 10+ 1),Math.floor(Math.random() * 4+ 1));
+		recruits.push(r);
+	}
+
+	return recruits;
+}
+
 
 
 // Plays game between two teams, return result as string.
@@ -137,8 +158,18 @@ export function playGame(t1,t2){
 	t2.rating = calcRating(t2.players);
 	console.log(t1.rating)
 	console.log(t2.rating)
-	var firstScore = Math.floor(Math.random() * t1.rating + .2* t1.rating);
-	var secondScore = Math.floor(Math.random() * t2.rating + .2*t2.rating);
+	var sumRating = t1.rating + t2.rating
+	var seedring = Math.floor(Math.random() * sumRating + 1);
+	if(seedring > t1.rating){
+		var firstScore = Math.floor(Math.random() * 40 + 40);
+		var secondScore = firstScore - Math.floor(Math.random() * 20 + 1);
+	}else{
+		var secondScore = Math.floor(Math.random() * 40 + 40);
+		var firstScore = secondScore - Math.floor(Math.random() * 20 + 1);
+	}
+
+	//var firstScore = Math.floor(Math.random() * t1.rating + .2* t1.rating);
+	//var secondScore = Math.floor(Math.random() * t2.rating + .2*t2.rating);
 	let result = t1.name + ": " + firstScore + ", " + t2.name + ": " + secondScore;
 	if(firstScore > secondScore){
 		t1.w++;
