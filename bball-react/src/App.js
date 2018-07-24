@@ -4,7 +4,7 @@ import './App.css';
 
 // import bball from './bball.png'; // relative path to image
 
-import {Player, Team, generateGameData, generateRecruits, playGame, improvePlayers, calcRating, generateWalkons} from './manage.js';
+import {Player, Team, generateGameData, generateRecruits, playGame, updatePlayers, calcRating, generateWalkons} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -175,8 +175,11 @@ class App extends Component {
         <div className="mini-title">{"Scores"}</div>
         <ScoreTable data={scores} /></div>
     }));
+
+    // const compare = (a, b) => a.l < b.l ? -1 : (a.l > b.l ? 1 : 0);
+    // this.state.gameData.teams.sort(compare);
+
     if(this.seasonData.day == this.seasonData.numDays){
-      // this.playoffTeams = this.state.gameData.teams.slice();
       const compare = (a, b) => a.l < b.l ? -1 : (a.l > b.l ? 1 : 0);
       this.state.gameData.teams.sort(compare);
       this.playoffTeams = [];
@@ -232,14 +235,13 @@ class App extends Component {
         }));
       }
     }
-
-
   }
 
   handleFinalRoster(e){
 
     // e.preventDefault();
     this.state.gameData.myTeam.players =this.activeRecruits;
+    this.activeRecruits = []
     // 'Rating:' + this.state.gameData.myTeam.rating
     this.setState(prevState => ({
         title: 'Final Roster',
@@ -299,7 +301,7 @@ class App extends Component {
     }
     else if(e.target.getAttribute("value") == "roster"){
       this.prevState = this.state;
-      console.log(this.prevState);
+
       this.setState(prevState => ({
         title: 'Your Roster',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
@@ -315,6 +317,7 @@ class App extends Component {
       for(let p of this.state.gameData.myTeam.players){
         this.recruitMap[p.name] = p;
       }
+      this.activeRecruits = [];
       this.setState(prevState => ({
         title: 'This Year Recruits',
         content: <RecruitTable data={recruits} handleCheckBox={this.handleCheckBox} final="false" />,
@@ -330,7 +333,7 @@ class App extends Component {
       }));
     }
     else if(e.target.getAttribute("value") == "end"){
-      improvePlayers(this.state.gameData.myTeam);
+      updatePlayers(this.state.gameData.myTeam);
       this.setState(prevState => ({
         title: 'Season End - Your players made the following improvements',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={true}/></div>,

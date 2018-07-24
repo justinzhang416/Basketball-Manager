@@ -71,23 +71,29 @@ export function generateGameData(){
 }
 
 //TODO: Make this not mutable?
-export function improvePlayers(team){
+export function updatePlayers(team){
 	let choices = ["shooting","playmaking","defense","rebounding"];
+	let newPlayers = []
 	for(let player of team.players){
-		player.improvements = {shooting: "", rebounding:"",playmaking: "", defense:""};
-		for(let i = 1; i <= player.ethic; i++){
-			if(Math.random() < .2){
-				let choice = choices[Math.floor(Math.random() * choices.length)];
-				player[choice] += 1;
-				player.improvements[choice]="*";
-				// player.improvements.push(choice);
+		if(player.year != 4){
+			player.improvements = {shooting: "", rebounding:"",playmaking: "", defense:""};
+			for(let i = 1; i <= player.ethic; i++){
+				if(Math.random() < .2){
+					let choice = choices[Math.floor(Math.random() * choices.length)];
+					player[choice] += 1;
+					player.improvements[choice]="*";
+					// player.improvements.push(choice);
+				}
 			}
+			player.avg =(player.shooting + player.playmaking + player.defense +
+				player.rebounding + player.ethic) / 5
+
+			player.year += 1;
+			newPlayers.push(player)
 		}
-		player.avg =(player.shooting + player.playmaking + player.defense +
-			player.rebounding + player.ethic) / 5
-		// player.offense += Math.floor(Math.random()*5)
-		// player.defense += Math.floor(Math.random()*5)
+		
 	}
+	team.players = newPlayers;
 	console.log(team);
 }
 

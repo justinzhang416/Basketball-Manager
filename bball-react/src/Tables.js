@@ -84,9 +84,14 @@ export class ScoreTable extends Component{
 }
 
 export class SeasonTable extends Component{
+
   render(){
+    const compare = (a, b) => a.l < b.l ? -1 : (a.l > b.l ? 1 : 0);
+    let copy = this.props.data.slice();
+    copy.sort(compare);
+
     return (<ReactTable
-          data={this.props.data}
+          data={copy}
           columns={[
             {
               Header: 'Team',

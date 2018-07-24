@@ -124,9 +124,8 @@ body {
     flex-direction:column;
     text-align: center;
     overflow: auto;
-    padding-top: auto;
-    padding-bottom: auto;
-    padding: 2vh 5vw;
+
+    padding: 0vh 0vw;
 }
 
 .page-title{
@@ -141,7 +140,7 @@ body {
     text-align: center;
     font-size: 1.3em;
     /*margin: 2vh 2vw;*/
-    padding: 2vh 0vw;
+    padding: 2vh 5vw;
 }
 
 .page-continue{
