@@ -45,7 +45,10 @@ export class PlayerTable extends Component{
             {
               id: 'year',
               Header: 'Year',
-              accessor: d => this.yearKey[d.year]
+              accessor: d => this.yearKey[d.year],
+              sortMethod: (a, b) => {
+                    return a.year > b.year ? 1 : -1;
+              }
             }
           ]}
           pageSize={this.props.data.length}
@@ -124,14 +127,14 @@ export class RecruitTable extends Component{
     var data = JSON.parse(JSON.stringify(this.props.data));
     for(let player of data){
       player.checkbox =
-      <label class="container"><input
+      <label className="container"><input
             key = {player.name}
             name= {player.name}
             type="checkbox"
             onChange={this.props.handleCheckBox}
             final = {this.props.final}
             />
-            <span class="checkmark"></span>
+            <span className="checkmark"></span>
             </label>
     }
     return (

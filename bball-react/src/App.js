@@ -350,18 +350,30 @@ class App extends Component {
   }
 
   openPopupbox(e){
-    
-    let content = (
+    let content;
+    let title;
+    if(e.target.getAttribute("value") == "roster"){
+      content = (
           <PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/>
         )
+      title = 'Your Roster'
+    }
+    else if(e.target.getAttribute("value") == "about"){
+      content = (
+          <div> Description about us! </div>
+        )
+      title = 'About Us'
+    }
+    
 
     console.log(content);
+
     PopupboxManager.open({
         content,
         config: {
           titleBar: {
             enable: true,
-            text: 'Your Roster'
+            text: title
           },
           fadeIn: true,
           fadeInSpeed: 500
@@ -391,11 +403,12 @@ class Sidebar extends Component{
             <Banner />
             <nav className="nav-sidebar">
                 <ul className="nav">
-                    <li><a href="javascript:;">Home</a></li>
-                    <li><a href="javascript:;" value="roster" onClick={this.props.handleNewPage}>Roster</a></li>
+                    <li><a href="javascript:;" value = "roster" onClick={this.props.openPopupbox}>Roster</a></li>
                     <li><a href="javascript:;" onClick={this.props.openPopupbox}>Standings</a></li>
-                    <li><a href="javascript:;">Scouting</a></li>
+                    <li><a href="javascript:;">Your Statistics</a></li>
+                    <li><a href="javascript:;">Leaderboard</a></li>
                     <li className="nav-divider"></li>
+                    <li><a href="javascript:;" value = "about" onClick={this.props.openPopupbox}>About</a></li>
                     <li><a href="javascript:;">Settings</a></li>
                     <li><a href="javascript:;"><i className="glyphicon glyphicon-off"></i>Log Out</a></li>
                 </ul>
