@@ -48,7 +48,7 @@ export class PlayerTable extends Component{
               accessor: d => this.yearKey[d.year]
             }
           ]}
-          defaultPageSize={this.props.data.length}
+          pageSize={this.props.data.length}
           className="-striped -highlight"
           showPagination= {false}
         />)

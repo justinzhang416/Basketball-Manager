@@ -15,7 +15,9 @@
     "url": "https://github.com/justinzhang416/justinzhang416.github.io/issues"
   },
   "homepage": "https://github.com/justinzhang416/justinzhang416.github.io#readme",
-  "dependencies": {},
+  "dependencies": {
+    "react-popupbox": "^2.0.8"
+  },
   "devDependencies": {},
   "description": ""
 }

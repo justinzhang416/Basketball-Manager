@@ -9,7 +9,13 @@ import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from '.
 
 
 import ReactTable from "react-table";
+import {
+    PopupboxManager,
+    PopupboxContainer
+  } from 'react-popupbox';
+
 import 'react-table/react-table.css';
+import 'react-popupbox/dist/react-popupbox.css';
 
 
 // import './../node_modules/react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -39,6 +45,7 @@ class App extends Component {
     this.handleGoHome = this.handleGoHome.bind(this);
     this.playoffMatch = this.playoffMatch.bind(this);
     this.playoffScore = this.playoffScore.bind(this);
+    this.openPopupbox = this.openPopupbox.bind(this);
 
     this.state = {
       username: '',
@@ -341,13 +348,36 @@ class App extends Component {
       }));
     }
   }
+
+  openPopupbox(e){
+    
+    let content = (
+          <PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/>
+        )
+
+    console.log(content);
+    PopupboxManager.open({
+        content,
+        config: {
+          titleBar: {
+            enable: true,
+            text: 'Your Roster'
+          },
+          fadeIn: true,
+          fadeInSpeed: 500
+        }
+      })
+  }
+
   render() {
+
     return (
       <div className="wrapper">
          <div className="game-container">
-            <Sidebar gameData={this.state.gameData} handleNewPage = {this.handleNewPage}/>
+            <Sidebar gameData={this.state.gameData} handleNewPage = {this.handleNewPage} openPopupbox ={this.openPopupbox}/>
             <Content gameData={this.state.gameData} title = {this.state.title} content = {this.state.content}
             button = {this.state.button}/>
+            <PopupboxContainer/>
          </div>
        </div>
     );
@@ -363,7 +393,7 @@ class Sidebar extends Component{
                 <ul className="nav">
                     <li><a href="javascript:;">Home</a></li>
                     <li><a href="javascript:;" value="roster" onClick={this.props.handleNewPage}>Roster</a></li>
-                    <li><a href="javascript:;">Standings</a></li>
+                    <li><a href="javascript:;" onClick={this.props.openPopupbox}>Standings</a></li>
                     <li><a href="javascript:;">Scouting</a></li>
                     <li className="nav-divider"></li>
                     <li><a href="javascript:;">Settings</a></li>
