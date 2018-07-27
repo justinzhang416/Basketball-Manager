@@ -4,7 +4,8 @@ import './App.css';
 
 // import bball from './bball.png'; // relative path to image
 
-import {Player, Team, generateGameData, generateRecruits, playGame, updatePlayers, calcRating, generateWalkons} from './manage.js';
+import {Player, Team, generateGameData, generateRecruits, playGame, 
+  updatePlayers, calcRating, generateWalkons,processEndSeason} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -88,7 +89,7 @@ class App extends Component {
   playoffMatch(){
 
     if(this.playoffTeams.length == 1){
-          this.playoffTeams[0].team.champs += 1;
+          this.playoffTeams[0].team.stats.champs += 1;
           this.setState(prevState => ({
           title: 'The winner is ' + this.playoffTeams[0].team.name + '!',
           content: '',
@@ -341,6 +342,7 @@ class App extends Component {
     }
     else if(e.target.getAttribute("value") == "end"){
       updatePlayers(this.state.gameData.myTeam);
+      processEndSeason(this.state.gameData);
       this.setState(prevState => ({
         title: 'Season End - Your players made the following improvements',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={true}/></div>,
@@ -363,6 +365,15 @@ class App extends Component {
           <div> Description about us! </div>
         )
       title = 'About Us'
+    }
+    else if(e.target.getAttribute("value") == "stats"){
+      content = (
+          <div> 
+          <div>Cumulative Record: {this.state.gameData.myTeam.stats.totw}-{this.state.gameData.myTeam.stats.totl} </div>
+          <div>Championships: {this.state.gameData.myTeam.stats.champs}</div>
+          </div>
+        )
+      title = 'Your Statistics'
     }
     
 
@@ -405,7 +416,7 @@ class Sidebar extends Component{
                 <ul className="nav">
                     <li><a href="javascript:;" value = "roster" onClick={this.props.openPopupbox}>Roster</a></li>
                     <li><a href="javascript:;" onClick={this.props.openPopupbox}>Standings</a></li>
-                    <li><a href="javascript:;">Your Statistics</a></li>
+                    <li><a href="javascript:;" value = "stats" onClick={this.props.openPopupbox}>Your Statistics</a></li>
                     <li><a href="javascript:;">Leaderboard</a></li>
                     <li className="nav-divider"></li>
                     <li><a href="javascript:;" value = "about" onClick={this.props.openPopupbox}>About</a></li>

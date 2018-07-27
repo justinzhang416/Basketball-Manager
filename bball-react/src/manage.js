@@ -22,6 +22,7 @@ export class Team{
   		this.w = 0;
   		this.l = 0;
   		this.rating = calcRating(players);
+  		this.stats = {totw: 0, totl: 0, champs:0}
 	}
 }
 
@@ -68,6 +69,15 @@ export function generateGameData(){
 	data.teams = allTeams;
 
 	return data;
+}
+
+export function processEndSeason(gameData){
+	for(let team of gameData.teams){
+		// team.stats.totw += team.w;
+		// team.stats.totl += team.l;
+		team.w = 0;
+		team.l = 0;
+	}
 }
 
 //TODO: Make this not mutable?
@@ -180,10 +190,15 @@ export function playGame(t1,t2){
 	if(firstScore > secondScore){
 		t1.w++;
 		t2.l++;
+		t1.stats.totw++;
+		t2.stats.totl++;
 	}
 	else{
 		t1.l++;
 		t2.w++;
+
+		t1.stats.totl++;
+		t2.stats.totw++;
 	}
 	return {name1: t1.name, score1: firstScore,name2: t2.name, score2: secondScore};
 }
