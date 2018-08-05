@@ -5,7 +5,7 @@ import './App.css';
 // import bball from './bball.png'; // relative path to image
 
 import {Player, Team, generateGameData, generateRecruits, playGame, 
-  updatePlayers, calcRating, generateWalkons,processEndSeason} from './manage.js';
+  updatePlayers, calcRating, generateWalkons,processEndSeason, callApi} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -49,6 +49,7 @@ class App extends Component {
     this.openPopupbox = this.openPopupbox.bind(this);
 
     this.state = {
+      pop: '',
       username: '',
       password: '',
       gameData: generateGameData(),
@@ -349,6 +350,21 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Next Season</button>
       }));
     }
+    else if(e.target.getAttribute("value") == 'reset'){
+      this.setState(prevState => ({
+        gameData: generateGameData(),
+        title: 'Your Roster',
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+      }));
+    }
+
+    else if(e.target.getAttribute("value") == "leader"){
+     callApi().then(res => this.setState(prevState => ({
+        content: res.express
+      })));
+     
+    }
   }
 
   openPopupbox(e){
@@ -375,9 +391,17 @@ class App extends Component {
         )
       title = 'Your Statistics'
     }
-    
+    else if(e.target.getAttribute("value") == "settings"){
+      content = (
+          <div> 
+          <button type="button" className="btn btn-default" value = "reset" onClick={this.handleNewPage}>Reset Game</button>
+          </div>
+        )
+      title = 'Settings'
+    }
 
-    console.log(content);
+    
+    
 
     PopupboxManager.open({
         content,
@@ -391,6 +415,8 @@ class App extends Component {
         }
       })
   }
+
+
 
   render() {
 
@@ -415,12 +441,11 @@ class Sidebar extends Component{
             <nav className="nav-sidebar">
                 <ul className="nav">
                     <li><a href="javascript:;" value = "roster" onClick={this.props.openPopupbox}>Roster</a></li>
-                    <li><a href="javascript:;" onClick={this.props.openPopupbox}>Standings</a></li>
                     <li><a href="javascript:;" value = "stats" onClick={this.props.openPopupbox}>Your Statistics</a></li>
-                    <li><a href="javascript:;">Leaderboard</a></li>
+                    <li><a href="javascript:;" value = "leader" onClick={this.props.handleNewPage}>Leaderboard</a></li>
                     <li className="nav-divider"></li>
                     <li><a href="javascript:;" value = "about" onClick={this.props.openPopupbox}>About</a></li>
-                    <li><a href="javascript:;">Settings</a></li>
+                    <li><a href="javascript:;" value = "settings" onClick={this.props.openPopupbox}>Settings</a></li>
                     <li><a href="javascript:;"><i className="glyphicon glyphicon-off"></i>Log Out</a></li>
                 </ul>
             </nav>

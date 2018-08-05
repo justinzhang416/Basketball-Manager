@@ -2,6 +2,7 @@
   "name": "bball-react",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000/",
   "dependencies": {
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
@@ -17,6 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+
+    "dev": "concurrently --kill-others-on-fail \"npm start\" \"cd src && node server.js\""
   }
 }

@@ -12,7 +12,8 @@ export class PlayerTable extends Component{
           columns={[
             {
               Header: 'Name',
-              accessor: 'name' // String-based value accessors!
+              accessor: 'name', // String-based value accessors!
+              minWidth: 150
             },
             {
               id: 'shoot',
@@ -144,31 +145,47 @@ export class RecruitTable extends Component{
                 columns={[
                   {
                     Header: 'Name',
-                    accessor: 'name' // String-based value accessors!
+                    accessor: 'name',
+                    
                   },
                   {
-                    Header: 'Shooting',
-                    accessor: 'shooting' // String-based value accessors!
+                    Header: 'SHOT',
+                    accessor: 'shooting',
+                    
                   },
                   {
-                    Header: 'Playmaking',
-                    accessor: 'playmaking' // String-based value accessors!
+                    Header: 'PLAY',
+                    accessor: 'playmaking',
+                    
                   },
                   {
-                    Header: 'Defense',
-                    accessor: 'defense' // String-based value accessors!
+                    Header: 'DEF',
+                    accessor: 'defense',
+                    
                   },
                   {
-                    Header: 'Rebounding',
-                    accessor: 'rebounding' // String-based value accessors!
+                    Header: 'REB',
+                    accessor: 'rebounding',
+                    
                   },
                   {
-                    Header: 'Ethic',
-                    accessor: 'ethic'
+                    Header: 'ETHIC',
+                    accessor: 'ethic',
+                   
                   },
                   {
                     Header: 'AVG',
-                    accessor: 'avg'
+                    accessor: 'avg',
+                    
+                  },
+                 {
+                    id: 'year',
+                    Header: 'Year',
+                    accessor: d => this.yearKey[d.year],
+                    sortMethod: (a, b) => {
+                          return a.year > b.year ? 1 : -1;
+                    },
+                    
                   },
                   {
                     Header: 'Recruit?',
