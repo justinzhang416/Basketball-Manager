@@ -1,5 +1,7 @@
 import {firstNames,lastNames} from './names.js'
 // Attributes: jump shot, driving, passing, defense, rebounding, work ethic
+
+
 export class Player{
 	constructor(name, shooting, playmaking, defense, rebounding, ethic, year){
 		this.name = name;
@@ -101,7 +103,7 @@ export function updatePlayers(team){
 			player.year += 1;
 			newPlayers.push(player)
 		}
-		
+
 	}
 	team.players = newPlayers;
 	console.log(team);

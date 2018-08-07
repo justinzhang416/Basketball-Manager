@@ -4,7 +4,7 @@ import './App.css';
 
 // import bball from './bball.png'; // relative path to image
 
-import {Player, Team, generateGameData, generateRecruits, playGame, 
+import {Player, Team, generateGameData, generateRecruits, playGame,
   updatePlayers, calcRating, generateWalkons,processEndSeason} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
@@ -17,9 +17,6 @@ import {
 
 import 'react-table/react-table.css';
 import 'react-popupbox/dist/react-popupbox.css';
-
-
-// import './../node_modules/react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 class Banner extends Component{
   // <img src={bball} alt="" className="bball"/>
@@ -368,14 +365,14 @@ class App extends Component {
     }
     else if(e.target.getAttribute("value") == "stats"){
       content = (
-          <div> 
+          <div>
           <div>Cumulative Record: {this.state.gameData.myTeam.stats.totw}-{this.state.gameData.myTeam.stats.totl} </div>
           <div>Championships: {this.state.gameData.myTeam.stats.champs}</div>
           </div>
         )
       title = 'Your Statistics'
     }
-    
+
 
     console.log(content);
 

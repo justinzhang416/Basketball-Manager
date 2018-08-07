@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-table": "^4.3.1",
