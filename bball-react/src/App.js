@@ -5,7 +5,7 @@ import './App.css';
 // import bball from './bball.png'; // relative path to image
 
 import {Player, Team, generateGameData, generateRecruits, playGame,
-  updatePlayers, calcRating, generateWalkons,processEndSeason} from './manage.js';
+  updatePlayers, calcRating, generateWalkons,processEndSeason, downloadSave} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -372,6 +372,16 @@ class App extends Component {
         )
       title = 'Your Statistics'
     }
+    else if(e.target.getAttribute("value") == "save"){
+      downloadSave(this.state.gameData.myTeam, this.state.gameData.teams);
+      content = (
+          <div>
+          <div>Your game information has been saved!</div>
+          <div>Make sure to keep that JSON file safe for uploading later</div>
+          </div>
+        )
+      title = 'Saved Game!'
+    }
 
 
     console.log(content);
@@ -414,6 +424,7 @@ class Sidebar extends Component{
                     <li><a href="javascript:;" value = "roster" onClick={this.props.openPopupbox}>Roster</a></li>
                     <li><a href="javascript:;" onClick={this.props.openPopupbox}>Standings</a></li>
                     <li><a href="javascript:;" value = "stats" onClick={this.props.openPopupbox}>Your Statistics</a></li>
+                    <li><a href="javascript:;" value = "save" onClick={this.props.openPopupbox}>Save Game</a></li>
                     <li><a href="javascript:;">Leaderboard</a></li>
                     <li className="nav-divider"></li>
                     <li><a href="javascript:;" value = "about" onClick={this.props.openPopupbox}>About</a></li>

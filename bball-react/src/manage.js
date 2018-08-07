@@ -82,6 +82,16 @@ export function processEndSeason(gameData){
 	}
 }
 
+export function downloadSave(team, teams){
+	var obj = {'username': 'vikram', 'password': 'beta', 'myTeam': team, 'allTeams': teams, a: 123, b: "4 5 6"};
+	var hiddenElement = document.createElement('a');
+
+	hiddenElement.href = 'data:attachment/text,' + encodeURI(JSON.stringify(obj));
+	hiddenElement.target = '_blank';
+	hiddenElement.download = 'bball.json';
+	hiddenElement.click();
+}
+
 //TODO: Make this not mutable?
 export function updatePlayers(team){
 	let choices = ["shooting","playmaking","defense","rebounding"];
