@@ -5,7 +5,7 @@ import './App.css';
 // import bball from './bball.png'; // relative path to image
 
 import {Player, Team, generateGameData, generateRecruits, playGame,
-  updatePlayers, calcRating, generateWalkons,processEndSeason, downloadSave} from './manage.js';
+  updatePlayers, calcRating, generateWalkons,processEndSeason, callApi,downloadSave} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -54,8 +54,8 @@ class App extends Component {
       <form>Username:<br/>
       <input type="text" name="firstname"/><br/>
       Password:<br/><input type="password" name="lastname"/><br/>
-      <br/ ><input type="submit" value="Login"  onClick={this.handleNewPage}/> <br/>
-      <input type="submit" value="Register"  onClick={this.handleNewPage}/> <br/>
+      <br/ ><input type="submit" value="login"  onClick={this.handleNewPage}/> <br/>
+      <input type="submit" value="register"  onClick={this.handleNewPage}/> <br/>
       <input type="submit" value="Play as Guest"  onClick={this.handleNewPage}/>
       </form></div>,
     }
@@ -358,6 +358,16 @@ class App extends Component {
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={true}/></div>,
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Next Season</button>
       }));
+    }
+    else if(e.target.getAttribute("value") == "login"){
+      e.preventDefault();
+      // this.setState(prevState => ({
+      //   content: <div> {callApi('/api/hello').express}</div>
+      // }));
+      callApi('/api/test').then(res => this.setState(prevState => ({
+        title: 'Test',
+        content: <div> {res.express}</div>
+      })));
     }
   }
 
