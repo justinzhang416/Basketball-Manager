@@ -1,24 +1,27 @@
 {
-  "name": "bballv2",
-  "version": "1.0.0",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/justinzhang416/justinzhang416.github.io.git"
-  },
-  "author": "justin zhang, vikram aikat",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/justinzhang416/justinzhang416.github.io/issues"
-  },
-  "homepage": "https://github.com/justinzhang416/justinzhang416.github.io#readme",
+  "name": "bball-react",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:5000/",
   "dependencies": {
-    "mongodb": "^3.1.1",
-    "react-popupbox": "^2.0.8"
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
+    "react": "^16.4.1",
+    "react-bootstrap": "^0.32.1",
+    "react-bootstrap-table": "^4.3.1",
+    "react-bootstrap-table-next": "^0.1.14",
+    "react-dom": "^16.4.1",
+    "react-popupbox": "^2.0.8",
+    "react-router-native": "^4.3.0",
+    "react-scripts": "^1.1.4",
+    "react-table": "^6.8.6"
   },
-  "devDependencies": {},
-  "description": ""
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+
+    "dev": "concurrently --kill-others-on-fail \"npm start\" \"cd src && node server.js\""
+  }
 }
