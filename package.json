@@ -6,11 +6,12 @@
   "dependencies": {
     "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
-    "react": "^16.4.1",
+    "pg": "^7.4.3",
+    "react": "^16.4.2",
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-table": "^4.3.1",
     "react-bootstrap-table-next": "^0.1.14",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.4.2",
     "react-popupbox": "^2.0.8",
     "react-router-native": "^4.3.0",
     "react-scripts": "^1.1.4",
@@ -21,7 +22,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-
     "dev": "concurrently --kill-others-on-fail \"npm start\" \"cd src && node server.js\""
   }
 }
