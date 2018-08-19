@@ -44,6 +44,7 @@ class App extends Component {
     this.playoffMatch = this.playoffMatch.bind(this);
     this.playoffScore = this.playoffScore.bind(this);
     this.openPopupbox = this.openPopupbox.bind(this);
+    this.handleRegistration = this.handleRegistration.bind(this);
 
     this.state = {
       username: '',
@@ -54,8 +55,8 @@ class App extends Component {
       <form>Username:<br/>
       <input type="text" name="firstname"/><br/>
       Password:<br/><input type="password" name="lastname"/><br/>
-      <br/ ><input type="submit" value="login"  onClick={this.handleNewPage}/> <br/>
-      <input type="submit" value="register"  onClick={this.handleNewPage}/> <br/>
+      <br/ ><input type="submit" value="Login"  onClick={this.handleNewPage}/> <br/>
+      <input type="submit" value="Register"  onClick={this.handleNewPage}/> <br/>
       <input type="submit" value="Play as Guest"  onClick={this.handleNewPage}/>
       </form></div>,
     }
@@ -302,6 +303,16 @@ class App extends Component {
       }));
   }
 
+  handleRegistration(e){
+    e.preventDefault();
+    const data = new FormData(e.target);
+    
+    fetch('/api/registration', {
+      method: 'POST',
+      body: data,
+    });
+  }
+
   handleNewPage(e){
     if(e.target.getAttribute("value") == "init"){
       this.setState(prevState => ({
@@ -359,7 +370,7 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Next Season</button>
       }));
     }
-    else if(e.target.getAttribute("value") == "login"){
+    else if(e.target.getAttribute("value") == "Login"){
       e.preventDefault();
       // this.setState(prevState => ({
       //   content: <div> {callApi('/api/hello').express}</div>
@@ -368,6 +379,27 @@ class App extends Component {
         title: 'Test',
         content: <div> {res.express}</div>
       })));
+
+    }
+    else if(e.target.getAttribute("value") == "Register"){
+      e.preventDefault();
+      this.setState(prevState => ({
+        title: 'Fill out the following information:',
+        content: <form onSubmit={this.handleRegistration}>
+        <label htmlFor="username">Enter username:</label><br/>
+        <input id="username" name="username" type="text" /><br/>
+
+        <label htmlFor="pass">Enter your password:</label><br/>
+        <input id="password" name="password" type="password" /><br/>
+
+        <label htmlFor="birthdate">Enter your birth date:</label><br/>
+        <input id="birthdate" name="birthdate" type="text" />
+
+        
+      </form>,
+        button: <button>Continue</button>
+      }));
+
     }
   }
 

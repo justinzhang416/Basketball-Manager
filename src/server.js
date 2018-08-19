@@ -42,26 +42,42 @@ const client = new Client({
 
 client.connect();
 
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-  if (err) throw err;
-  for (let row of res.rows) {
-    console.log(JSON.stringify(row));
-  }
-  client.end();
-});
+// client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+//   if (err) throw err;
+//   for (let row of res.rows) {
+//     console.log(JSON.stringify(row));
+//   }
+//   client.end();
+// });
 
 
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
+app.get('/api/registration', (req, res) => {
+  // res.send({ express: 'Hello From Express' });
+
+  console.log(req.body);
+});
+
 app.get('/api/test', (req, res) => {
 	
 
-	
+	client.query('SELECT * FROM userdata;', (err, result) => {
+    if (err) throw err;
 
+    let str = "";
+    for (let row of result.rows) {
+      str += JSON.stringify(row);
+      console.log(JSON.stringify(row));
+    }
   
+    client.end();
 
+    res.send({ express: str })
+  });
+  
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
