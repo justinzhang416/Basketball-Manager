@@ -306,6 +306,7 @@ class App extends Component {
   handleRegistration(e){
     e.preventDefault();
     const data = new FormData(e.target);
+    console.log(data);
     
     fetch('/api/registration', {
       method: 'POST',
