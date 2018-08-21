@@ -5,7 +5,9 @@ import './App.css';
 // import bball from './bball.png'; // relative path to image
 
 import {Player, Team, generateGameData, generateRecruits, playGame,
-  updatePlayers, calcRating, generateWalkons,processEndSeason, callApi,downloadSave} from './manage.js';
+  updatePlayers, calcRating, generateWalkons,processEndSeason, content = (
+          <PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/>
+        ),downloadSave} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -310,6 +312,7 @@ class App extends Component {
   handleRegistration(e){
     e.preventDefault();
     const data = new FormData(e.target);
+
     console.log(this.state.username)
     console.log(this.state.password)
     console.log(this.state.team)
@@ -325,6 +328,11 @@ class App extends Component {
       
     }))
 
+    // fetch('/api/registration', {
+    //   method: 'POST',
+    //   body: data,
+    // });
+
   }
 
   handleNewPage(e){
@@ -334,7 +342,7 @@ class App extends Component {
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
       }));
-    } 
+    }
     else if(e.target.getAttribute("value") == "player" || e.target.getAttribute("value") == "Play as Guest"){
       this.setState(prevState => ({
         title: 'Your Roster',
@@ -400,6 +408,7 @@ class App extends Component {
       this.setState(prevState => ({
         title: 'Fill out the following information:',
         content: <form onSubmit={this.handleRegistration}>
+
         <label htmlFor="username">Enter new username:</label><br/>
         <input  id="username" name="username" type="text" onChange={this.handleInputChange}/><br/>
 
@@ -418,7 +427,6 @@ class App extends Component {
           <option value="NC State">NC State</option>
         </select> <br/><br/>
         <button type="submit">Continue</button>
-        
       </form>,
         button: ""
       }));
