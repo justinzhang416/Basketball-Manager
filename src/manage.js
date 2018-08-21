@@ -42,28 +42,21 @@ export function calcRating(team){
 }
 
 // This will be replaced by a server call for a particular user's data
-export function generateGameData(){
+export function generateGameData(teamName){
 	let data = {};
 	var p1 = fillOutTeams(5);
-	let myTeam = new Team("UNC",p1);
+	let myTeam = new Team(teamName,p1);
 
 	let allTeams = [];
-	p1 = fillOutTeams(8);
-	allTeams.push(new Team("Duke", p1));
-	p1 = fillOutTeams(8);
-	allTeams.push(new Team("NC State", p1));
-	p1 = fillOutTeams(8);
-	allTeams.push(new Team("Wake Forest", p1));
 
-	p1 = fillOutTeams(8);
-	allTeams.push(new Team("Louisville", p1));
-	p1 = fillOutTeams(8);
-	allTeams.push(new Team("Syracuse", p1));
-	p1 = fillOutTeams(8);
-	allTeams.push(new Team("Miami", p1));
-	p1 = fillOutTeams(8);
-	allTeams.push(new Team("Virginia", p1));
+	let allNames = ["UNC","Duke","NC State", "Wake Forest", "Louisville","Syracuse","Miami","Virginia"];
 
+	for(let name of allNames){
+		if(name != teamName){
+			p1 = fillOutTeams(8);
+			allTeams.push(new Team(name, p1));
+		}
+	}
 
 	allTeams.push(myTeam);
 

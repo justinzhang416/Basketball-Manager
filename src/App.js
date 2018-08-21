@@ -40,16 +40,17 @@ class App extends Component {
     this.playGames = this.playGames.bind(this);
     this.startSeason = this.startSeason.bind(this);
     this.handleFinalRoster = this.handleFinalRoster.bind(this);
-    this.handleGoHome = this.handleGoHome.bind(this);
     this.playoffMatch = this.playoffMatch.bind(this);
     this.playoffScore = this.playoffScore.bind(this);
     this.openPopupbox = this.openPopupbox.bind(this);
     this.handleRegistration = this.handleRegistration.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
 
     this.state = {
       username: '',
       password: '',
-      gameData: generateGameData(),
+      team: '',
+      gameData: generateGameData("UNC"),
       title: 'Welcome to Basketball Madnager',
       content: <div>
       <form>Username:<br/>
@@ -204,17 +205,6 @@ class App extends Component {
     }
   }
 
-  handleGoHome(e){
-    let prev = this.prevState;
-    // this.setState(prevState => ({
-    //     title: prev.title,
-    //     content: prev.content,
-    //     button: prev.button
-    // }));
-
-    this.setState(prevState => (prev));
-
-  }
 
   handleCheckBox(e){
     // e.preventDefault();
@@ -303,10 +293,26 @@ class App extends Component {
       }));
   }
 
+  handleInputChange(e) {
+    const target = e.target;
+    // const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    console.log(target);
+    this.setState(prevState => ({
+        [target.id]: target.value
+    }));
+    // this.setState({
+    //   [target.id]: target.value
+    // });
+    console.log(this.state.username)
+    console.log(this.state.password)
+    console.log(this.state.team)
+  }
+
   handleRegistration(e){
     e.preventDefault();
     const data = new FormData(e.target);
-    console.log(data);
+    console.log(e.target);
     
     fetch('/api/registration', {
       method: 'POST',
@@ -383,22 +389,31 @@ class App extends Component {
 
     }
     else if(e.target.getAttribute("value") == "Register"){
-      e.preventDefault();
+      // e.preventDefault();
       this.setState(prevState => ({
         title: 'Fill out the following information:',
         content: <form onSubmit={this.handleRegistration}>
-        <label htmlFor="username">Enter username:</label><br/>
-        <input id="username" name="username" type="text" /><br/>
+        <label htmlFor="username">Enter new username:</label><br/>
+        <input  id="username" name="username" type="text" onChange={this.handleInputChange}/><br/>
 
-        <label htmlFor="pass">Enter your password:</label><br/>
-        <input id="password" name="password" type="password" /><br/>
+        <label htmlFor="pass">Enter new password:</label><br/>
+        <input id="password" name="password" type="password" onChange={this.handleInputChange}/><br/>
 
-        <label htmlFor="birthdate">Enter your birth date:</label><br/>
-        <input id="birthdate" name="birthdate" type="text" />
-
+        <label htmlFor="birthdate">Choose Your Team:</label><br/>
+        <select id="team" onChange={this.handleInputChange}>
+          <option value="unc">UNC</option>
+          <option value="duke">Duke</option>
+          <option value="va">Virginia</option>
+          <option value="wfu">Wake Forest</option>
+          <option value="louis">Louisville</option>
+          <option value="syra">Syracuse</option>
+          <option value="miami">Miami</option>
+          <option value="ncst">NC State</option>
+        </select> <br/><br/>
+        <button type="submit">Continue</button>
         
       </form>,
-        button: <button>Continue</button>
+        button: ""
       }));
 
     }
