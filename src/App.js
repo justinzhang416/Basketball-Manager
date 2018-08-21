@@ -5,7 +5,7 @@ import './App.css';
 // import bball from './bball.png'; // relative path to image
 
 import {Player, Team, generateGameData, generateRecruits, playGame,
-  updatePlayers, calcRating, generateWalkons,processEndSeason, callApi,downloadSave} from './manage.js';
+  updatePlayers, calcRating, generateWalkons,processEndSeason, callApi, callApiLogin, downloadSave} from './manage.js';
 import {PlayerTable, RecruitTable, SeasonTable, ScoreTable,PlayoffTable} from './Tables.js';
 
 
@@ -45,6 +45,7 @@ class App extends Component {
     this.openPopupbox = this.openPopupbox.bind(this);
     this.handleRegistration = this.handleRegistration.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
 
     this.state = {
       username: '',
@@ -54,9 +55,9 @@ class App extends Component {
       title: 'Welcome to Basketball Madnager',
       content: <div>
       <form>Username:<br/>
-      <input type="text" name="firstname"/><br/>
-      Password:<br/><input type="password" name="lastname"/><br/>
-      <br/ ><input type="submit" value="Login"  onClick={this.handleNewPage}/> <br/>
+      <input type="text" name="firstname" id='username' onChange={this.handleInputChange}/><br/>
+      Password:<br/><input type="password" name="lastname" id='password' onChange={this.handleInputChange}/><br/>
+      <br/ ><input type="submit" value="Login"  onClick={this.handleLogin}/> <br/>
       <input type="submit" value="Register"  onClick={this.handleNewPage}/> <br/>
       <input type="submit" value="Play as Guest"  onClick={this.handleNewPage}/>
       </form></div>,
@@ -309,6 +310,24 @@ class App extends Component {
     console.log(this.state.team)
   }
 
+  handleLogin(e) {
+    e.preventDefault();
+    const target = e.target;
+    // const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    console.log(target);
+    this.setState(prevState => ({
+        [target.id]: target.value
+    }));
+
+    console.log(this.state.username)
+    console.log(this.state.password)
+    console.log(this.state.team)
+
+    var jaswon =  {'username': this.state.username, 'password': this.state.password}
+    callApiLogin('api/login', jaswon)
+  }
+
   handleRegistration(e){
     e.preventDefault();
     const data = new FormData(e.target);
@@ -384,10 +403,13 @@ class App extends Component {
       // this.setState(prevState => ({
       //   content: <div> {callApi('/api/hello').express}</div>
       // }));
-      callApi('/api/test').then(res => this.setState(prevState => ({
-        title: 'Test',
-        content: <div> {res.express}</div>
-      })));
+
+
+
+      // callApi('/api/test').then(res => this.setState(prevState => ({
+      //   title: 'Test',
+      //   content: <div> {res.express}</div>
+      // })));
 
     }
     else if(e.target.getAttribute("value") == "Register"){
@@ -446,7 +468,7 @@ class App extends Component {
       title = 'Your Statistics'
     }
     else if(e.target.getAttribute("value") == "save"){
-      downloadSave(this.state.gameData.myTeam, this.state.gameData.teams);
+      downloadSave(this.state.gameData);
       content = (
           <div>
           <div>Your game information has been saved!</div>

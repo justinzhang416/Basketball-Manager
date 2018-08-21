@@ -18,7 +18,7 @@ const url = 'postgres://qfunsrkkdmnrke:796592c8ad62ba2641cb94c4e1b5b5803b6350895
 // 	    if (err) throw err;
 // 	    console.log(result);
 // 	    res.send({ express: "result" });
-	    
+
 // 	  });
 // 	});
 
@@ -28,7 +28,7 @@ const url = 'postgres://qfunsrkkdmnrke:796592c8ad62ba2641cb94c4e1b5b5803b6350895
 // 	    if (err) throw err;
 // 	    console.log(result);
 // 	    res.send({ express: "result" });
-	    
+
 // 	  });
 // 	});
 const { Client } = require('pg');
@@ -61,8 +61,29 @@ app.get('/api/registration', (req, res) => {
   console.log(req.body);
 });
 
+app.get('/api/login', (req, res) => {
+console.log('hi');
+	jason = req.body;
+	console.log(jason);
+
+	client.query('SELECT * FROM userdata WHERE username =;', (err, result) => {
+    if (err) throw err;
+
+    let str = "";
+    for (let row of result.rows) {
+      str += JSON.stringify(row);
+      console.log(JSON.stringify(row));
+    }
+
+    client.end();
+
+    res.send({ express: str })
+  });
+
+});
+
 app.get('/api/test', (req, res) => {
-	
+
 
 	client.query('SELECT * FROM userdata;', (err, result) => {
     if (err) throw err;
@@ -72,12 +93,12 @@ app.get('/api/test', (req, res) => {
       str += JSON.stringify(row);
       console.log(JSON.stringify(row));
     }
-  
+
     client.end();
 
     res.send({ express: str })
   });
-  
+
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

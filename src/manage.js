@@ -75,8 +75,8 @@ export function processEndSeason(gameData){
 	}
 }
 
-export function downloadSave(team, teams){
-	var obj = {'username': 'vikram', 'password': 'beta', 'myTeam': team, 'allTeams': teams, a: 123, b: "4 5 6"};
+export function downloadSave(gameData){
+	var obj = {'username': 'vikram', 'password': 'beta', 'gameData': gameData};
 	var hiddenElement = document.createElement('a');
 
 	hiddenElement.href = 'data:attachment/text,' + encodeURI(JSON.stringify(obj));
@@ -216,3 +216,15 @@ export async function callApi(command){
 
     return body;
   }
+
+	export async function callApiLogin(command, userPass){
+	    const response = await fetch(command, {
+	      method: 'POST',
+	      body: userPass,
+	    });
+	    const body = await response.json();
+
+	    if (response.status !== 200) throw Error(body.message);
+
+	    return body;
+	  }
