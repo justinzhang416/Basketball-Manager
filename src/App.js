@@ -307,7 +307,7 @@ class App extends Component {
     e.preventDefault();
     const data = new FormData(e.target);
     console.log(data);
-    
+
     fetch('/api/registration', {
       method: 'POST',
       body: data,
@@ -321,7 +321,7 @@ class App extends Component {
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
       }));
-    } 
+    }
     else if(e.target.getAttribute("value") == "player" || e.target.getAttribute("value") == "Play as Guest"){
       this.setState(prevState => ({
         title: 'Your Roster',
@@ -396,7 +396,7 @@ class App extends Component {
         <label htmlFor="birthdate">Enter your birth date:</label><br/>
         <input id="birthdate" name="birthdate" type="text" />
 
-        
+
       </form>,
         button: <button>Continue</button>
       }));

@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:5000/",
   "dependencies": {
+    "concurrently": "^3.6.1",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
     "pg": "^7.4.3",
@@ -15,7 +16,8 @@
     "react-popupbox": "^2.0.8",
     "react-router-native": "^4.3.0",
     "react-scripts": "^1.1.4",
-    "react-table": "^6.8.6"
+    "react-table": "^6.8.6",
+    "yarn": "^1.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
