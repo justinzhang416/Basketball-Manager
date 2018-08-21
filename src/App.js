@@ -49,9 +49,9 @@ class App extends Component {
     this.state = {
       username: '',
       password: '',
-      team: '',
-      gameData: generateGameData("UNC"),
-      title: 'Welcome to Basketball Madnager',
+      team: 'UNC',
+      gameData: {},
+      title: 'Welcome to Basketball Manager',
       content: <div>
       <form>Username:<br/>
       <input type="text" name="firstname"/><br/>
@@ -304,20 +304,27 @@ class App extends Component {
     // this.setState({
     //   [target.id]: target.value
     // });
-    console.log(this.state.username)
-    console.log(this.state.password)
-    console.log(this.state.team)
+    
   }
 
   handleRegistration(e){
     e.preventDefault();
     const data = new FormData(e.target);
-    console.log(e.target);
-    
-    fetch('/api/registration', {
-      method: 'POST',
-      body: data,
-    });
+    console.log(this.state.username)
+    console.log(this.state.password)
+    console.log(this.state.team)
+    let teamName = this.state.team;
+
+    let pls = generateGameData(teamName);
+
+    this.setState(prevState => ({
+      gameData: pls,
+      title: 'Your Roster',
+        content: <div><PlayerTable data={pls.myTeam.players} improve ={false}/></div>,
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+      
+    }))
+
   }
 
   handleNewPage(e){
@@ -401,14 +408,14 @@ class App extends Component {
 
         <label htmlFor="birthdate">Choose Your Team:</label><br/>
         <select id="team" onChange={this.handleInputChange}>
-          <option value="unc">UNC</option>
-          <option value="duke">Duke</option>
-          <option value="va">Virginia</option>
-          <option value="wfu">Wake Forest</option>
-          <option value="louis">Louisville</option>
-          <option value="syra">Syracuse</option>
-          <option value="miami">Miami</option>
-          <option value="ncst">NC State</option>
+          <option value="UNC">UNC</option>
+          <option value="Duke">Duke</option>
+          <option value="Virginia">Virginia</option>
+          <option value="Wake Forest">Wake Forest</option>
+          <option value="Louisville">Louisville</option>
+          <option value="Syracuse">Syracuse</option>
+          <option value="Miami">Miami</option>
+          <option value="NC State">NC State</option>
         </select> <br/><br/>
         <button type="submit">Continue</button>
         
@@ -423,9 +430,15 @@ class App extends Component {
     let content;
     let title;
     if(e.target.getAttribute("value") == "roster"){
-      content = (
+      if(this.state.gameData.myTeam){
+        content = (
           <PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/>
         )
+      }
+      else{
+        content = (<div></div>)
+      }
+      
       title = 'Your Roster'
     }
     else if(e.target.getAttribute("value") == "about"){
