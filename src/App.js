@@ -312,13 +312,10 @@ class App extends Component {
   handleRegistration(e){
     e.preventDefault();
     const data = new FormData(e.target);
-<<<<<<< HEAD
     console.log(data);
 
-=======
     console.log(e.target);
-    
->>>>>>> 0f497bb1c3f1a590ab70795bda1aeaf45215f3ad
+
     fetch('/api/registration', {
       method: 'POST',
       body: data,
@@ -398,18 +395,7 @@ class App extends Component {
       this.setState(prevState => ({
         title: 'Fill out the following information:',
         content: <form onSubmit={this.handleRegistration}>
-<<<<<<< HEAD
-        <label htmlFor="username">Enter username:</label><br/>
-        <input id="username" name="username" type="text" /><br/>
 
-        <label htmlFor="pass">Enter your password:</label><br/>
-        <input id="password" name="password" type="password" /><br/>
-
-        <label htmlFor="birthdate">Enter your birth date:</label><br/>
-        <input id="birthdate" name="birthdate" type="text" />
-
-
-=======
         <label htmlFor="username">Enter new username:</label><br/>
         <input  id="username" name="username" type="text" onChange={this.handleInputChange}/><br/>
 
@@ -428,8 +414,6 @@ class App extends Component {
           <option value="ncst">NC State</option>
         </select> <br/><br/>
         <button type="submit">Continue</button>
-        
->>>>>>> 0f497bb1c3f1a590ab70795bda1aeaf45215f3ad
       </form>,
         button: ""
       }));
