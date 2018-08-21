@@ -56,7 +56,7 @@ app.get('/api/hello', (req, res) => {
 });
 
 app.get('/api/registration', (req, res) => {
-  // res.send({ express: 'Hello From Express' });
+  res.send({ express: 'Hello From Express' });
 
   console.log(req.body);
 });
