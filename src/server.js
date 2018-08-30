@@ -5,6 +5,9 @@ const port = process.env.PORT || 5000;
 
 const url = 'postgres://qfunsrkkdmnrke:796592c8ad62ba2641cb94c4e1b5b5803b6350895c6e9b773849df6b0f9d4875@ec2-174-129-236-147.compute-1.amazonaws.com:5432/d1bdkkg1oldobv'
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // var mysql = require('mysql');
 // var con = mysql.createConnection({
 // 	  host: "localhost",
@@ -61,7 +64,7 @@ app.get('/api/registration', (req, res) => {
   console.log(req.body);
 });
 
-app.get('/api/login', (req, res) => {
+app.post('/api/login', (req, res) => {
 console.log('hi');
 	jason = req.body;
 	console.log(jason);
@@ -81,6 +84,19 @@ console.log('hi');
   });
 
 });
+
+app.post('/api/register', (req, res) => {
+console.log('hi');
+  jason = req.body;
+  console.log(req.body.username);
+
+  // client.query('INSERT into userdata (username, password, gameData) values($1, $2, $3)',
+  //   [jason.username,jason.password,JSON.stringify(jason.gameData)]);
+
+  res.send({ express: "done" })
+});
+
+
 
 app.get('/api/test', (req, res) => {
 

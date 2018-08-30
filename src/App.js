@@ -345,6 +345,9 @@ class App extends Component {
 
     }))
 
+    var jaswon =  {username: this.state.username, password: this.state.password, gameData:pls}
+    callApiLogin('api/register', jaswon)
+
     // fetch('/api/registration', {
     //   method: 'POST',
     //   body: data,

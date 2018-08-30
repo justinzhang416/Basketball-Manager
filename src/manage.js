@@ -217,10 +217,11 @@ export async function callApi(command){
     return body;
   }
 
-	export async function callApiLogin(command, userPass){
+	export async function callApiLogin(command, data){
+		console.log(JSON.stringify(data));
 	    const response = await fetch(command, {
 	      method: 'POST',
-	      body: userPass,
+	      body: JSON.stringify({username: "please"}),
 	    });
 	    const body = await response.json();
 
