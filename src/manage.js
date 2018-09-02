@@ -221,7 +221,10 @@ export async function callApi(command){
 		console.log(JSON.stringify(data));
 	    const response = await fetch(command, {
 	      method: 'POST',
-	      body: JSON.stringify({username: "please"}),
+	      headers: {
+		      'Content-Type': 'application/json',
+		  },
+	      body: JSON.stringify(data),
 	    });
 	    const body = await response.json();
 

@@ -34,14 +34,22 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // 	  });
 // 	});
-const { Client } = require('pg');
-
-
+const { Pool, Client } = require('pg');
 
 const client = new Client({
-  connectionString: url,
-  ssl: true,
-});
+  user: 'qfunsrkkdmnrke',
+  host: 'ec2-174-129-236-147.compute-1.amazonaws.com',
+  database: 'd1bdkkg1oldobv',
+  password: '796592c8ad62ba2641cb94c4e1b5b5803b6350895c6e9b773849df6b0f9d4875',
+  port: 5432,
+  ssl: true
+})
+
+
+// const client = new Client({
+//   connectionString: url,
+//   ssl: true,
+// });
 
 client.connect();
 
@@ -65,40 +73,67 @@ app.get('/api/registration', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-console.log('hi');
+  console.log('hi1');
 	jason = req.body;
 	console.log(jason);
 
-	client.query('SELECT * FROM userdata WHERE username =;', (err, result) => {
-    if (err) throw err;
+  const text = "SELECT username FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
+  const values = [jason.username,jason.password];
 
-    let str = "";
-    for (let row of result.rows) {
-      str += JSON.stringify(row);
-      console.log(JSON.stringify(row));
+    // callback
+  client.query(text, (err, res) => {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      console.log(res.rows[0]);
+      // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
     }
+  })
 
-    client.end();
+	// client.query('SELECT * FROM userdata WHERE username =;', (err, result) => {
+ //    if (err) throw err;
 
-    res.send({ express: str })
-  });
+ //    let str = "start: ";
+ //    for (let row of result.rows) {
+ //      str += JSON.stringify(row);
+ //      console.log(JSON.stringify(row));
+ //    }
+
+ //    client.end();
+ //    console.log(str);
+ //    res.send({ express: str })
+ //  });
 
 });
 
 app.post('/api/register', (req, res) => {
-console.log('hi');
+  console.log('hi2');
   jason = req.body;
   console.log(req.body.username);
 
-  // client.query('INSERT into userdata (username, password, gameData) values($1, $2, $3)',
+  const text = 'INSERT INTO userdata(username, password, gameData) VALUES($1, $2, $3) RETURNING *'
+  const values = [jason.username,jason.password,jason.gameData];
+
+    // callback
+  client.query(text, values, (err, res) => {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      console.log(res.rows[0]);
+      // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
+    }
+  })
+
+  // client.query(,
   //   [jason.username,jason.password,JSON.stringify(jason.gameData)]);
 
-  res.send({ express: "done" })
+  // res.send({ express: "done" })
 });
 
 
 
 app.get('/api/test', (req, res) => {
+
 
 
 	client.query('SELECT * FROM userdata;', (err, result) => {
