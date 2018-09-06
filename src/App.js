@@ -46,6 +46,7 @@ class App extends Component {
     this.handleRegistration = this.handleRegistration.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.callApiLogin = this.callApiLogin.bind(this);
 
     this.state = {
       username: '',
@@ -308,6 +309,33 @@ class App extends Component {
 
   }
 
+  async callApiLogin(command, data){
+    console.log(JSON.stringify(data));
+      const response = await fetch(command, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+      },
+        body: JSON.stringify(data),
+      });
+      const body = await response.json();
+
+
+      if (response.status !== 200) throw Error(body.message);
+      this.setState(prevState => ({
+        gameData: body.data
+      }));
+      console.log(body.data);
+
+      this.setState(prevState => ({
+        title: 'Your Roster',
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+      }));
+    }
+
+
+
   handleLogin(e) {
     e.preventDefault();
     const target = e.target;
@@ -323,7 +351,8 @@ class App extends Component {
     console.log(this.state.team)
 
     var jaswon =  {'username': this.state.username, 'password': this.state.password}
-    callApiLogin('api/login', jaswon)
+    this.callApiLogin('api/login', jaswon);
+    
   }
 
   handleRegistration(e){
@@ -345,8 +374,8 @@ class App extends Component {
 
     }))
 
-    var jaswon =  {username: this.state.username, password: this.state.password, gameData:pls}
-    callApiLogin('api/register', jaswon)
+    var jaswon =  {username: this.state.username, password: this.state.password, gameData:pls};
+    callApiLogin('api/register', jaswon);
 
     // fetch('/api/registration', {
     //   method: 'POST',

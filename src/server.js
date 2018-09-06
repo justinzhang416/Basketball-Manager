@@ -72,23 +72,28 @@ app.get('/api/registration', (req, res) => {
   console.log(req.body);
 });
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', (req, res1) => {
   console.log('hi1');
 	jason = req.body;
-	console.log(jason);
+	//console.log(jason);
+  let result; 
 
-  const text = "SELECT username FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
+  const text = "SELECT gameData FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
   const values = [jason.username,jason.password];
 
     // callback
-  client.query(text, (err, res) => {
+  client.query(text, (err, res2) => {
     if (err) {
       console.log(err.stack)
     } else {
-      console.log(res.rows[0]);
+      //console.log(res.rows[0].gamedata);
       // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
+      result = res2.rows[0].gamedata;
+      
+      res1.send({ data: JSON.parse(result)})
     }
-  })
+  });
+  
 
 	// client.query('SELECT * FROM userdata WHERE username =;', (err, result) => {
  //    if (err) throw err;
@@ -130,12 +135,32 @@ app.post('/api/register', (req, res) => {
   // res.send({ express: "done" })
 });
 
+app.post('/api/update', (req, res1) => {
+  console.log('hi1');
+  jason = req.body;
+  //console.log(jason);
+  let result; 
+
+  const text = "SELECT gameData FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
+  const values = [jason.username,jason.password];
+
+    // callback
+  client.query(text, (err, res2) => {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      //console.log(res.rows[0].gamedata);
+      // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
+      result = res2.rows[0].gamedata;
+      
+      res1.send({ data: JSON.parse(result)})
+    }
+  });
+});
+
 
 
 app.get('/api/test', (req, res) => {
-
-
-
 	client.query('SELECT * FROM userdata;', (err, result) => {
     if (err) throw err;
 
