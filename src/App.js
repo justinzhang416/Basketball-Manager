@@ -320,18 +320,41 @@ class App extends Component {
       });
       const body = await response.json();
 
-
       if (response.status !== 200) throw Error(body.message);
-      this.setState(prevState => ({
-        gameData: body.data
-      }));
-      console.log(body.data);
+      if(body.data['test'] === 'something'){
+        console.log("nothing but net")
+        this.setState(prevState => ({
+          username: '',
+          password: '',
+          team: 'UNC',
+          gameData: {},
+          title: 'Welcome to Basketball Manager',
+          content: <div>
+          <form>Username:<br/>
+          <input type="text" name="firstname" id='username' onChange={this.handleInputChange} value='Username' onfocus="this.value=''"/><br/>
+          Password:<br/><input type="password" name="lastname" id='password' onChange={this.handleInputChange} value='Password' onfocus="this.value=''"/><br/>
+          <br/><font color='red'> Incorrect Login Information </font>
+          <br/ ><input type="submit" value="Login"  onClick={this.handleLogin}/> <br/>
+          <input type="submit" value="Register"  onClick={this.handleNewPage}/> <br/>
+          <input type="submit" value="Play as Guest"  onClick={this.handleNewPage}/>
+          </form></div>,
+        }));
 
-      this.setState(prevState => ({
-        title: 'Your Roster',
-        content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
-        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
-      }));
+
+      }else{
+        console.log('net')
+        this.setState(prevState => ({
+          gameData: body.data
+        }));
+        console.log(body.data);
+
+        this.setState(prevState => ({
+          title: 'Your Roster',
+          content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
+          button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+        }));
+      }
+
     }
 
 
@@ -352,7 +375,6 @@ class App extends Component {
 
     var jaswon =  {'username': this.state.username, 'password': this.state.password}
     this.callApiLogin('api/login', jaswon);
-    
   }
 
   handleRegistration(e){
