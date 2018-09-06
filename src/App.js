@@ -320,7 +320,6 @@ class App extends Component {
       });
       const body = await response.json();
 
-
       if (response.status !== 200) throw Error(body.message);
       this.setState(prevState => ({
         gameData: body.data
@@ -352,7 +351,6 @@ class App extends Component {
 
     var jaswon =  {'username': this.state.username, 'password': this.state.password}
     this.callApiLogin('api/login', jaswon);
-    
   }
 
   handleRegistration(e){

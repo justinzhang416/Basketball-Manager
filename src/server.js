@@ -75,8 +75,9 @@ app.get('/api/registration', (req, res) => {
 app.post('/api/login', (req, res1) => {
   console.log('hi1');
 	jason = req.body;
+  console.log('wow')
 	//console.log(jason);
-  let result; 
+  let result;
 
   const text = "SELECT gameData FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
   const values = [jason.username,jason.password];
@@ -89,11 +90,11 @@ app.post('/api/login', (req, res1) => {
       //console.log(res.rows[0].gamedata);
       // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
       result = res2.rows[0].gamedata;
-      
+
       res1.send({ data: JSON.parse(result)})
     }
   });
-  
+
 
 	// client.query('SELECT * FROM userdata WHERE username =;', (err, result) => {
  //    if (err) throw err;
@@ -139,7 +140,7 @@ app.post('/api/update', (req, res1) => {
   console.log('hi1');
   jason = req.body;
   //console.log(jason);
-  let result; 
+  let result;
 
   const text = "SELECT gameData FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
   const values = [jason.username,jason.password];
@@ -152,7 +153,7 @@ app.post('/api/update', (req, res1) => {
       //console.log(res.rows[0].gamedata);
       // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
       result = res2.rows[0].gamedata;
-      
+
       res1.send({ data: JSON.parse(result)})
     }
   });
