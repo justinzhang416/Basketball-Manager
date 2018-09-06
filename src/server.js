@@ -78,11 +78,11 @@ app.post('/api/login', (req, res1) => {
 	//console.log(jason);
   let result; 
 
-  const text = "SELECT gameData FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
+  const text = "SELECT gameData FROM userdata WHERE username=($1) and password=($2);";
   const values = [jason.username,jason.password];
 
     // callback
-  client.query(text, (err, res2) => {
+  client.query(text,values, (err, res2) => {
     if (err) {
       console.log(err.stack)
     } else {
@@ -136,24 +136,19 @@ app.post('/api/register', (req, res) => {
 });
 
 app.post('/api/update', (req, res1) => {
-  console.log('hi1');
+  console.log('hi5');
   jason = req.body;
-  //console.log(jason);
-  let result; 
+  console.log(jason.gameData); 
 
-  const text = "SELECT gameData FROM userdata WHERE username='" + jason.username+ "' and password='" + jason.password +"';";
-  const values = [jason.username,jason.password];
+  const text = "UPDATE userdata SET gameData=($1)  WHERE username=($2) and password=($3);";
+  const values = [jason.gameData, jason.username,jason.password];
 
     // callback
-  client.query(text, (err, res2) => {
+  client.query(text, values, (err, res2) => {
     if (err) {
       console.log(err.stack)
     } else {
-      //console.log(res.rows[0].gamedata);
-      // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
-      result = res2.rows[0].gamedata;
-      
-      res1.send({ data: JSON.parse(result)})
+      console.log(res2.rows[0]);
     }
   });
 });

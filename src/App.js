@@ -440,6 +440,10 @@ class App extends Component {
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={true}/></div>,
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Next Season</button>
       }));
+
+
+      var jaswon =  {username: this.state.username, password: this.state.password, gameData:this.state.gameData};
+      callApiLogin('api/update', jaswon);
     }
     else if(e.target.getAttribute("value") == "Login"){
       e.preventDefault();
@@ -484,6 +488,14 @@ class App extends Component {
       }));
 
     }
+    else if(e.target.getAttribute("value") == 'reset'){
+      this.setState(prevState => ({
+        gameData: generateGameData(),
+        title: 'Your Roster',
+        content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
+        button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+      }));
+    }
   }
 
   openPopupbox(e){
@@ -526,6 +538,35 @@ class App extends Component {
         )
       title = 'Saved Game!'
     }
+    else if(e.target.getAttribute("value") == "settings"){
+      content = (
+          <div>
+          <button type="button" className="btn btn-default" value = "reset" onClick={this.handleNewPage}>Reset Game</button>
+          </div>
+        )
+      title = 'Settings!'
+    }
+    else if(e.target.getAttribute("value") == "logoff"){
+      var jaswon =  {username: this.state.username, password: this.state.password, gameData:this.state.gameData};
+      callApiLogin('api/update', jaswon)
+
+      this.setState(prevState => ({
+        gameData: {},
+        username: "",
+        password:"",
+        content: <div>
+      <form>Username:<br/>
+      <input type="text" name="firstname" id='username' onChange={this.handleInputChange}/><br/>
+      Password:<br/><input type="password" name="lastname" id='password' onChange={this.handleInputChange}/><br/>
+      <br/ ><input type="submit" value="Login"  onClick={this.handleLogin}/> <br/>
+      <input type="submit" value="Register"  onClick={this.handleNewPage}/> <br/>
+      <input type="submit" value="Play as Guest"  onClick={this.handleNewPage}/>
+      </form></div>,
+      button: ""
+        }));
+      return;
+    }
+    
 
 
     console.log(content);
@@ -569,11 +610,10 @@ class Sidebar extends Component{
                     <li><a href="javascript:;" onClick={this.props.openPopupbox}>Standings</a></li>
                     <li><a href="javascript:;" value = "stats" onClick={this.props.openPopupbox}>Your Statistics</a></li>
                     <li><a href="javascript:;" value = "save" onClick={this.props.openPopupbox}>Save Game</a></li>
-                    <li><a href="javascript:;">Leaderboard</a></li>
                     <li className="nav-divider"></li>
                     <li><a href="javascript:;" value = "about" onClick={this.props.openPopupbox}>About</a></li>
-                    <li><a href="javascript:;">Settings</a></li>
-                    <li><a href="javascript:;"><i className="glyphicon glyphicon-off"></i>Log Out</a></li>
+                    <li><a href="javascript:;" value = "settings" onClick={this.props.openPopupbox}>Settings</a></li>
+                    <li><a href="javascript:;" value = "logoff" onClick={this.props.openPopupbox}><i className="glyphicon glyphicon-off"></i>Log Out</a></li>
                 </ul>
             </nav>
         </div>
