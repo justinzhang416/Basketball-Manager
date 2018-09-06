@@ -85,13 +85,23 @@ app.post('/api/login', (req, res1) => {
     // callback
   client.query(text, (err, res2) => {
     if (err) {
+      console.log('whyyy')
       console.log(err.stack)
     } else {
       //console.log(res.rows[0].gamedata);
       // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
-      result = res2.rows[0].gamedata;
+      if(res2.rows[0]){
+        console.log("hmm")
+        result = res2.rows[0].gamedata;
+        console.log(result)
+        res1.send({ data: JSON.parse(result)})
+      }else{
+        res1.send({ data: {'test': 'something'}})
+        console.log("hmm not working")
+      }
+      console.log('EOD')
 
-      res1.send({ data: JSON.parse(result)})
+
     }
   });
 
