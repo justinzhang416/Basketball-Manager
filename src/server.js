@@ -37,10 +37,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 const { Pool, Client } = require('pg');
 
 const client = new Client({
-  user: 'qfunsrkkdmnrke',
-  host: 'ec2-174-129-236-147.compute-1.amazonaws.com',
-  database: 'd1bdkkg1oldobv',
-  password: '796592c8ad62ba2641cb94c4e1b5b5803b6350895c6e9b773849df6b0f9d4875',
+  user: 'bluhjxbffpzstr',
+  host: 'ec2-54-83-13-119.compute-1.amazonaws.com',
+  database: 'd6rqgdjven510t',
+  password: 'c92a604b7a13f8f8ccc58eb0803dc80d810b2c9b19fa6c045aa429ab2f690c2f',
   port: 5432,
   ssl: true
 })
