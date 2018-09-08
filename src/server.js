@@ -61,6 +61,9 @@ client.connect();
 //   client.end();
 // });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
