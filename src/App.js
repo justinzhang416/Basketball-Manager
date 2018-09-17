@@ -414,7 +414,7 @@ class App extends Component {
         button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
       }));
     }
-    else if(e.target.getAttribute("value") == "player" || e.target.getAttribute("value") == "Play as Guest"){
+    else if(e.target.getAttribute("value") == "player" ){
       this.setState(prevState => ({
         title: 'Your Roster',
         content: <div><PlayerTable data={this.state.gameData.myTeam.players} improve ={false}/></div>,
@@ -510,6 +510,19 @@ class App extends Component {
       }));
 
     }
+    else if(e.target.getAttribute("value") == 'Play as Guest'){
+      let teamName = "UNC";
+
+      let pls = generateGameData(teamName);
+
+      this.setState(prevState => ({
+        gameData: pls,
+        title: 'Your Roster',
+          content: <div><PlayerTable data={pls.myTeam.players} improve ={false}/></div>,
+          button: <button type="button" className="btn btn-default" value = "recruit" onClick={this.handleNewPage}>Recruit!</button>
+
+      }))
+    }
     else if(e.target.getAttribute("value") == 'reset'){
       this.setState(prevState => ({
         gameData: generateGameData(),
@@ -544,6 +557,7 @@ class App extends Component {
     else if(e.target.getAttribute("value") == "stats"){
       content = (
           <div>
+          <div>Team Name: {this.state.gameData.myTeam.name}</div>
           <div>Cumulative Record: {this.state.gameData.myTeam.stats.totw}-{this.state.gameData.myTeam.stats.totl} </div>
           <div>Championships: {this.state.gameData.myTeam.stats.champs}</div>
           </div>
