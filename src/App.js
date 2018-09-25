@@ -169,7 +169,7 @@ class App extends Component {
     this.seasonData.halfSize = teams.length / 2;
     this.seasonData.teamsSize = this.seasonData.temp.length;
     this.seasonData.day = 0;
-    console.log(this.seasonData)
+    // console.log(this.seasonData)
   }
 
   playGames(){
@@ -210,7 +210,7 @@ class App extends Component {
 
   handleCheckBox(e){
     // e.preventDefault();
-    console.log(e);
+    // console.log(e);
     const target = e.target;
     if(target.checked){
       this.activeRecruits.push(this.recruitMap[target.name]);
@@ -227,7 +227,7 @@ class App extends Component {
       this.setState(prevState => ({
           checkboxActive: false
         }));
-      console.log("yo")
+      // console.log("yo")
       this.setState(prevState => ({
          button: <button disabled = {!(this.activeRecruits.length == 8)} type="button" className="btn btn-default" value = "start" onClick={this.handleFinalRoster}>Choose Final Roster!</button>,
          checkboxActive: true
@@ -257,8 +257,8 @@ class App extends Component {
 
   handleRecruitSubmit(e){
     e.preventDefault();
-    console.log(e.target);
-    console.log(this.activeRecruits);
+    // console.log(e.target);
+    // console.log(this.activeRecruits);
 
     let recruitsZ = []
     var potLen = this.activeRecruits.length;
@@ -299,7 +299,7 @@ class App extends Component {
     const target = e.target;
     // const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    console.log(target);
+    // console.log(target);
     this.setState(prevState => ({
         [target.id]: target.value
     }));
@@ -310,7 +310,7 @@ class App extends Component {
   }
 
   async callApiLogin(command, data){
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
       const response = await fetch(command, {
         method: 'POST',
         headers: {
@@ -322,7 +322,7 @@ class App extends Component {
 
       if (response.status !== 200) throw Error(body.message);
       if(body.data['test'] === 'something'){
-        console.log("nothing but net")
+        // console.log("nothing but net")
         this.setState(prevState => ({
           username: '',
           password: '',
@@ -342,11 +342,11 @@ class App extends Component {
 
 
       }else{
-        console.log('net')
+        // console.log('net')
         this.setState(prevState => ({
           gameData: body.data
         }));
-        console.log(body.data);
+        // console.log(body.data);
 
         this.setState(prevState => ({
           title: 'Your Roster',
@@ -364,14 +364,14 @@ class App extends Component {
     const target = e.target;
     // const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    console.log(target);
+    // console.log(target);
     this.setState(prevState => ({
         [target.id]: target.value
     }));
 
-    console.log(this.state.username)
-    console.log(this.state.password)
-    console.log(this.state.team)
+    // console.log(this.state.username)
+    // console.log(this.state.password)
+    // console.log(this.state.team)
 
     var jaswon =  {'username': this.state.username, 'password': this.state.password}
     this.callApiLogin('api/login', jaswon);
@@ -381,9 +381,9 @@ class App extends Component {
     e.preventDefault();
     const data = new FormData(e.target);
 
-    console.log(this.state.username)
-    console.log(this.state.password)
-    console.log(this.state.team)
+    // console.log(this.state.username)
+    // console.log(this.state.password)
+    // console.log(this.state.team)
     let teamName = this.state.team;
 
     let pls = generateGameData(teamName);
@@ -613,7 +613,7 @@ class App extends Component {
     
 
 
-    console.log(content);
+  
 
     PopupboxManager.open({
         content,
