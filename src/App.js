@@ -550,7 +550,14 @@ class App extends Component {
     }
     else if(e.target.getAttribute("value") == "about"){
       content = (
-          <div> Description about us! </div>
+          <div> 
+          <p>My name is Justin Zhang, and I'm a junior at Brown University, studying Computer
+           Science. In my free time I love to play and watch basketball, hence my interest in a basketball manager game! Check out my
+           website at <a href="justinzhang589.github.io">justinzhang589.github.io</a>.</p>
+           <br/>
+           <p>I'm Vikram Aikat, and I'm a junior at UNC Chapel Hill, studying Computer
+           Science and Quantitative Biology with a minor in Chemistry. I'm passionate about basketball, tennis, and gaming. </p>
+           </div>
         )
       title = 'About Us'
     }
@@ -590,6 +597,7 @@ class App extends Component {
         gameData: {},
         username: "",
         password:"",
+        title: 'Welcome to Basketball Manager',
         content: <div>
       <form>Username:<br/>
       <input type="text" name="firstname" id='username' onChange={this.handleInputChange}/><br/>
@@ -643,9 +651,9 @@ class Sidebar extends Component{
             <nav className="nav-sidebar">
                 <ul className="nav">
                     <li><a href="javascript:;" value = "roster" onClick={this.props.openPopupbox}>Roster</a></li>
-                    <li><a href="javascript:;" onClick={this.props.openPopupbox}>Standings</a></li>
+                    
                     <li><a href="javascript:;" value = "stats" onClick={this.props.openPopupbox}>Your Statistics</a></li>
-                    <li><a href="javascript:;" value = "save" onClick={this.props.openPopupbox}>Save Game</a></li>
+                    
                     <li className="nav-divider"></li>
                     <li><a href="javascript:;" value = "about" onClick={this.props.openPopupbox}>About</a></li>
                     <li><a href="javascript:;" value = "settings" onClick={this.props.openPopupbox}>Settings</a></li>
