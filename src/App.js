@@ -548,6 +548,20 @@ class App extends Component {
 
       title = 'Your Roster'
     }
+    else if(e.target.getAttribute("value") == "instructions"){
+      
+        content = (
+          <div> 
+          <p>Welcome to Basketball Manager! Your job is to recruit new players and manage your roster throughout the seasons. 
+          Your roster can only have 8 players at any given time. Your players have two offensive skills, two defensive skills, and ethic, 
+          which measures how likely they are to improve at the end of each season. Good luck!</p>
+           </div>
+        )
+      
+      
+
+      title = 'Instructions'
+    }
     else if(e.target.getAttribute("value") == "about"){
       content = (
           <div> 
@@ -655,6 +669,7 @@ class Sidebar extends Component{
                     <li><a href="javascript:;" value = "stats" onClick={this.props.openPopupbox}>Your Statistics</a></li>
                     
                     <li className="nav-divider"></li>
+                    <li><a href="javascript:;" value = "instructions" onClick={this.props.openPopupbox}>Instructions</a></li>
                     <li><a href="javascript:;" value = "about" onClick={this.props.openPopupbox}>About</a></li>
                     <li><a href="javascript:;" value = "settings" onClick={this.props.openPopupbox}>Settings</a></li>
                     <li><a href="javascript:;" value = "logoff" onClick={this.props.openPopupbox}><i className="glyphicon glyphicon-off"></i>Log Out</a></li>
