@@ -553,7 +553,7 @@ class App extends Component {
           <div> 
           <p>My name is Justin Zhang, and I'm a junior at Brown University, studying Computer
            Science. In my free time I love to play and watch basketball, hence my interest in a basketball manager game! Check out my
-           website at <a href="justinzhang589.github.io">justinzhang589.github.io</a>.</p>
+           website at <a href="https://justinzhang589.github.io">justinzhang589.github.io</a>.</p>
            <br/>
            <p>I'm Vikram Aikat, and I'm a junior at UNC Chapel Hill, studying Computer
            Science and Quantitative Biology with a minor in Chemistry. I'm passionate about basketball, tennis, and gaming. </p>
